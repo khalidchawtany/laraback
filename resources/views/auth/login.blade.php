@@ -16,12 +16,12 @@
 
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" name="email" id="email" class="form-control">
+                                <input type="email" name="email" id="email" class="form-control" value="{{ config('laraback.demo') ? 'admin@example.com' : '' }}">
                             </div>
 
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" name="password" id="password" class="form-control">
+                                <input type="password" name="password" id="password" class="form-control" value="{{ config('laraback.demo') ? 'admin123' : '' }}">
                             </div>
 
                             <div class="form-check">
