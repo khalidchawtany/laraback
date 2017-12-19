@@ -27,10 +27,10 @@
             </div>
 
             <div class="form-group">
-                <div>
-                    <label>Roles</label>
-                    <button type="button" class="btn btn-secondary btn-sm ml-1" data-check-all="roles[]" title="Check All"><i class="far fa-check-square"></i></button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-check-none="roles[]" title="Check None"><i class="far fa-square"></i></button>
+                <label>Roles</label>
+                <div class="mb-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-check-all="roles[]">Check All</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-uncheck-all="roles[]">Uncheck All</button>
                 </div>
                 @foreach ($roles as $role)
                     <div class="form-check">

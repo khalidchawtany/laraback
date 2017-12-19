@@ -196,8 +196,8 @@ $(document).ready(function () {
     });
 
     // uncheck all checkboxes
-    $(document).on('click', '[data-check-none]', function () {
-        $(this).closest('form').find('[name="' + $(this).data('check-none') + '"]').each(function () {
+    $(document).on('click', '[data-uncheck-all]', function () {
+        $(this).closest('form').find('[name="' + $(this).data('uncheck-all') + '"]').each(function () {
             $(this).prop('checked', false).change();
         });
     });

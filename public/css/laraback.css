@@ -83,8 +83,8 @@ body {
     line-height: 1;
 }
 
-/* add cursor to buttons */
-.btn, .close {
+/* add cursor to buttons & checks */
+.btn, .close, .form-check-label {
     cursor: pointer;
 }
 

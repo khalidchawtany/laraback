@@ -13,10 +13,10 @@
             </div>
 
             <div class="form-group">
-                <div>
-                    <label>Permissions</label>
-                    <button type="button" class="btn btn-secondary btn-sm ml-1" data-check-all="permissions[]" title="Check All"><i class="far fa-check-square"></i></button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-check-none="permissions[]" title="Check None"><i class="far fa-square"></i></button>
+                <label>Permissions</label>
+                <div class="mb-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-check-all="permissions[]">Check All</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-uncheck-all="permissions[]">Uncheck All</button>
                 </div>
                 <ul class="list-group list-group-hover">
                     @foreach ($group_permissions as $group => $permissions)
