@@ -1,15 +1,15 @@
 @extends('laraback::layouts.app')
 
-@section('title', 'Activities')
+@section('title', 'All Activities')
 @section('content')
     <h1 class="display-5 mb-4">@yield('title')</h1>
 
     <table id="activities_datatable" class="table table-hover" cellspacing="0" width="100%">
         <thead>
         <tr>
+            <th>Date</th>
             <th>User</th>
             <th>Log</th>
-            <th>Date</th>
             <th class="actions">Actions</th>
         </tr>
         </thead>
@@ -21,11 +21,11 @@
         $(document).ready(function () {
             $('#activities_datatable').DataTable({
                 ajax: '{{ route('activities.datatable') }}',
-                order: [[ 2, 'desc' ]],
+                order: [[ 0, 'desc' ]],
                 columns: [
+                    { data: 'created_at', className: 'timezone' },
                     { data: 'user.name' },
                     { data: 'log' },
-                    { data: 'created_at', className: 'timezone' },
                     {
                         render: function (data, type, full) {
                             var actions = '';

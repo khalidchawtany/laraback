@@ -7,9 +7,9 @@
     <table id="activities_user_datatable" class="table table-hover" cellspacing="0" width="100%">
         <thead>
         <tr>
+            <th>Date</th>
             <th>User</th>
             <th>Log</th>
-            <th>Date</th>
             <th class="actions">Actions</th>
         </tr>
         </thead>
@@ -21,11 +21,11 @@
         $(document).ready(function () {
             $('#activities_user_datatable').DataTable({
                 ajax: '{{ route('activities.user.datatable', $user->id) }}',
-                order: [[ 2, 'desc' ]],
+                order: [[ 0, 'desc' ]],
                 columns: [
+                    { data: 'created_at', className: 'timezone' },
                     { data: 'user.name' },
                     { data: 'log' },
-                    { data: 'created_at', className: 'timezone' },
                     {
                         render: function (data, type, full) {
                             var actions = '';
