@@ -12,7 +12,7 @@ class SettingController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:Edit Settings')->only(['editForm', 'edit']);
+        $this->middleware('can:Edit Settings');
     }
     
     public function editForm()
