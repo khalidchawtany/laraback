@@ -44,6 +44,9 @@
             <ul class="list-unstyled mb-0">
                 <li{!! request()->is('dashboard') ?  ' class="active"' : '' !!}><a href="{{ route('dashboard') }}"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
                 <!-- bread_navbar -->
+                @can('Edit Settings')
+                    <li{!! request()->is('settings') ?  ' class="active"' : '' !!}><a href="{{ route('settings') }}"><i class="fa fa-fw fa-cog"></i> Settings</a></li>
+                @endcan
                 @can('Browse Roles')
                     <li{!! request()->is('roles') ?  ' class="active"' : '' !!}><a href="{{ route('roles') }}"><i class="fa fa-fw fa-shield-alt"></i> Roles</a></li>
                 @endcan

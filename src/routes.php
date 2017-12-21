@@ -24,6 +24,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('password/change', config('laraback.controllers.auth') . '@passwordChangeForm')->name('password.change');
     Route::patch('password/change', config('laraback.controllers.auth') . '@passwordChange');
 
+    // settings
+    Route::get('settings', config('laraback.controllers.setting') . '@editForm')->name('settings');
+    Route::patch('settings', config('laraback.controllers.setting') . '@edit');
+
     // role
     Route::get('roles', config('laraback.controllers.role') . '@index')->name('roles');
     Route::get('roles/datatable', config('laraback.controllers.role') . '@indexDatatable')->name('roles.datatable');

@@ -3,6 +3,7 @@
 namespace Kjdion84\Laraback;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -42,6 +43,9 @@ class LarabackServiceProvider extends ServiceProvider
 
         // blade directives
         $this->bladeDirectives();
+        
+        // settings
+        $this->settings();
     }
 
     public function register()
@@ -74,5 +78,14 @@ class LarabackServiceProvider extends ServiceProvider
         Blade::directive('endcanany', function () {
             return '<?php endif; ?>';
         });
+    }
+    
+    public function settings()
+    {
+        if (Schema::hasTable('settings')) {
+            foreach (app(config('laraback.models.setting'))->get() as $setting) {
+                Config::set('settings.'.$setting->key, $setting->value);
+            }
+        }
     }
 }
