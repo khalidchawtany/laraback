@@ -33,6 +33,7 @@ class LarabackServiceProvider extends ServiceProvider
         // views
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laraback');
         $this->publishes([__DIR__ . '/../resources/views/layouts/app.blade.php' => resource_path('views/vendor/laraback/layouts/app.blade.php')], 'required');
+        $this->publishes([__DIR__ . '/../resources/views/settings/edit.blade.php' => resource_path('views/vendor/laraback/settings/edit.blade.php')], 'required');
         $this->publishes([__DIR__ . '/../resources/views' => resource_path('views/vendor/laraback')], 'views');
 
         // routes
