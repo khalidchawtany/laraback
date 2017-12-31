@@ -8,10 +8,10 @@
         </div>
         <div class="col-md">
             @can('Add Users')
-                <button type="button" class="btn btn-primary" data-modal="{{ route('users.add') }}" title="Add"><i class="fa fa-plus"></i> Add User</button>
+                <button type="button" class="btn btn-primary" data-modal="{{ route('users.add') }}"><i class="fa fa-plus"></i> Add User</button>
             @endcan
             @can('Browse Activities')
-                <a href="{{ route('activities') }}" class="btn btn-primary" title="Activities"><i class="fa fa-history"></i> View Activity</a>
+                <a href="{{ route('activities') }}" class="btn btn-primary"><i class="fa fa-history"></i> View Activity</a>
             @endcan
         </div>
     </div>
