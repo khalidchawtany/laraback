@@ -4,5 +4,5 @@
 @section('content')
     <h1 class="display-5 mb-4">@yield('title')</h1>
 
-    <p>Your are logged in!</p>
+    <p>You are logged in!</p>
 @endsection

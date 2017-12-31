@@ -15,8 +15,8 @@
             <div class="form-group">
                 <label>Permissions</label>
                 <div class="mb-2">
-                    <button type="button" class="btn btn-secondary btn-sm" data-check-all="permissions[]">Check All</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-uncheck-all="permissions[]">Uncheck All</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-check-all="permissions[]"><i class="fa fa-check-square"></i> Check All</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-uncheck-all="permissions[]"><i class="fa fa-square"></i> Uncheck All</button>
                 </div>
                 <ul class="list-group list-group-hover">
                     @foreach ($group_permissions as $group => $permissions)
@@ -36,7 +36,7 @@
         </div>
 
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Edit</button>
+            <button type="submit" class="btn btn-primary">@yield('title')</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </form>

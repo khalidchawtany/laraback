@@ -1,6 +1,6 @@
 @extends('laraback::layouts.app')
 
-@section('title', 'All Activities')
+@section('title', 'Activity')
 @section('content')
     <h1 class="display-5 mb-4">@yield('title')</h1>
 

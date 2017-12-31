@@ -3,12 +3,12 @@
 @section('title', 'Roles')
 @section('content')
     <div class="row mb-4">
-        <div class="col">
+        <div class="col-md-auto">
             <h1 class="display-5">@yield('title')</h1>
         </div>
-        <div class="col text-right">
+        <div class="col-md">
             @can('Add Roles')
-                <button type="button" class="btn btn-primary btn-icon" data-modal="{{ route('roles.add') }}" title="Add"><i class="fa fa-fw fa-plus"></i></button>
+                <button type="button" class="btn btn-primary" data-modal="{{ route('roles.add') }}"><i class="fa fa-plus"></i> Add Role</button>
             @endcan
         </div>
     </div>

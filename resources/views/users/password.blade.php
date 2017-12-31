@@ -19,7 +19,7 @@
         </div>
 
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Change</button>
+            <button type="submit" class="btn btn-primary">@yield('title')</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </form>

@@ -3,15 +3,15 @@
 @section('title', 'Users')
 @section('content')
     <div class="row mb-4">
-        <div class="col">
+        <div class="col-md-auto">
             <h1 class="display-5">@yield('title')</h1>
         </div>
-        <div class="col text-right">
+        <div class="col-md">
             @can('Add Users')
-                <button type="button" class="btn btn-primary btn-icon" data-modal="{{ route('users.add') }}" title="Add"><i class="fa fa-fw fa-plus"></i></button>
+                <button type="button" class="btn btn-primary" data-modal="{{ route('users.add') }}" title="Add"><i class="fa fa-plus"></i> Add User</button>
             @endcan
             @can('Browse Activities')
-                <a href="{{ route('activities') }}" class="btn btn-primary btn-icon" title="Activities"><i class="fa fa-fw fa-history"></i></a>
+                <a href="{{ route('activities') }}" class="btn btn-primary" title="Activities"><i class="fa fa-history"></i> View Activity</a>
             @endcan
         </div>
     </div>
@@ -20,7 +20,7 @@
         <thead>
         <tr>
             <th>Name</th>
-            <th>Email</th>
+            <th>Email Address</th>
             <th>Roles</th>
             <th class="actions">Actions</th>
         </tr>
@@ -42,11 +42,11 @@
                             var actions = '';
 
                             @can('Browse Activities')
-                                actions += ' <a href="{{ route('activities.user', ':id') }}" class="btn btn-primary btn-icon" title="Activities"><i class="fa fa-fw fa-history"></i></a> ';
+                                actions += ' <a href="{{ route('activities.user', ':id') }}" class="btn btn-primary btn-icon" title="Activity"><i class="fa fa-fw fa-history"></i></a> ';
                             @endcan
                             @can('Edit Users')
                                 actions += ' <button type="button" class="btn btn-primary btn-icon" data-modal="{{ route('users.edit', ':id') }}" title="Edit"><i class="fa fa-fw fa-pencil-alt"></i></button> ';
-                                actions += ' <button type="button" class="btn btn-primary btn-icon" data-modal="{{ route('users.password', ':id') }}" title="Password"><i class="fa fa-fw fa-lock"></i></button> ';
+                                actions += ' <button type="button" class="btn btn-primary btn-icon" data-modal="{{ route('users.password', ':id') }}" title="Change Password"><i class="fa fa-fw fa-lock"></i></button> ';
                             @endcan
                             @can('Delete Users')
                                 actions += ' <button type="button" class="btn btn-danger btn-icon" data-modal="{{ route('delete', ['route' => 'users.delete', 'id' => ':id']) }}" title="Delete"><i class="fa fa-fw fa-trash"></i></button> ';

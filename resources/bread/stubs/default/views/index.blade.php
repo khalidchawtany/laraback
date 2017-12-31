@@ -3,12 +3,12 @@
 @section('title', 'bread_model_strings')
 @section('content')
     <div class="row mb-4">
-        <div class="col">
+        <div class="col-md-auto">
             <h1 class="display-5">@yield('title')</h1>
         </div>
-        <div class="col text-right">
+        <div class="col-md">
             @can('Add bread_model_strings')
-                <button type="button" class="btn btn-primary btn-icon" data-modal="{{ route('bread_model_variables.add') }}" title="Add"><i class="fa fa-fw fa-plus"></i></button>
+                <button type="button" class="btn btn-primary" data-modal="{{ route('bread_model_variables.add') }}"><i class="fa fa-plus"></i> Add bread_model_string</button>
             @endcan
         </div>
     </div>

@@ -13,6 +13,6 @@
             <input name="example" id="example" class="form-control" value="{{ config('settings.example') }}">
         </div>
 
-        <button type="submit" class="btn btn-primary">Edit</button>
+        <button type="submit" class="btn btn-primary">Edit Settings</button>
     </form>
 @endsection

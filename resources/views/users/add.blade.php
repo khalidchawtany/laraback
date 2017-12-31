@@ -12,7 +12,7 @@
             </div>
 
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">Email Address</label>
                 <input type="email" name="email" id="email" class="form-control">
             </div>
 
@@ -29,8 +29,8 @@
             <div class="form-group">
                 <label>Roles</label>
                 <div class="mb-2">
-                    <button type="button" class="btn btn-secondary btn-sm" data-check-all="roles[]">Check All</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-uncheck-all="roles[]">Uncheck All</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-check-all="roles[]"><i class="fa fa-check-square"></i> Check All</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-uncheck-all="roles[]"><i class="fa fa-square"></i> Uncheck All</button>
                 </div>
                 @foreach ($roles as $role)
                     <div class="form-check">
@@ -44,7 +44,7 @@
         </div>
 
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary">@yield('title')</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </form>

@@ -23,6 +23,6 @@
             <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
         </div>
 
-        <button type="submit" class="btn btn-primary">Change</button>
+        <button type="submit" class="btn btn-primary">@yield('title')</button>
     </form>
 @endsection

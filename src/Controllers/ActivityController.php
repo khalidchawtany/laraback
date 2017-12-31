@@ -46,6 +46,6 @@ class ActivityController extends Controller
 
     public function userDatatable($id)
     {
-        return datatables()->of(app(config('laraback.models.activity'))->with('user')->where('user_id', $id)->get())->toJson();
+        return datatables()->of(app(config('laraback.models.activity'))->where('user_id', $id)->get())->toJson();
     }
 }

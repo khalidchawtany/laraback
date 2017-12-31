@@ -10,7 +10,7 @@
         {{ csrf_field() }}
 
         <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email Address</label>
             <input type="email" name="email" id="email" class="form-control" value="{{ config('laraback.demo') ? 'admin@example.com' : '' }}">
         </div>
 
@@ -22,11 +22,11 @@
         <div class="form-check">
             <label class="form-check-label">
                 <input type="checkbox" name="remember" class="form-check-input">
-                Remember
+                Remember Me
             </label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Login</button>
-        <a class="btn btn-link" href="{{ route('password.email') }}">Forgot Password?</a>
+        <button type="submit" class="btn btn-primary">@yield('title')</button>
+        <a class="btn btn-link" href="{{ route('password.email') }}">Forgot Password</a>
     </form>
 @endsection

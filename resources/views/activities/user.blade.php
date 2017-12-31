@@ -1,6 +1,6 @@
 @extends('laraback::layouts.app')
 
-@section('title', 'User Activities')
+@section('title', $user->name.' Activity')
 @section('content')
     <h1 class="display-5 mb-4">@yield('title')</h1>
 
@@ -8,7 +8,6 @@
         <thead>
         <tr>
             <th>Date</th>
-            <th>User</th>
             <th>Log</th>
             <th class="actions">Actions</th>
         </tr>
@@ -24,7 +23,6 @@
                 order: [[ 0, 'desc' ]],
                 columns: [
                     { data: 'created_at', className: 'timezone' },
-                    { data: 'user.name' },
                     { data: 'log' },
                     {
                         render: function (data, type, full) {
