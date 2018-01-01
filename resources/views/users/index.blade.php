@@ -2,7 +2,7 @@
 
 @section('title', 'Users')
 @section('content')
-    <div class="row mb-4">
+    <div class="row mb-4 align-items-center">
         <div class="col-md-auto">
             <h1 class="display-5">@yield('title')</h1>
         </div>
