@@ -52,7 +52,8 @@ $.extend(true, $.fn.dataTable.defaults, {
 
 $(document).ready(function () {
     // toggle sidebar when button clicked
-    $('.sidebar-toggle').on('click', function () {
+    $('.sidebar-toggle').on('click', function (e) {
+        e.preventDefault();
         $('.sidebar').toggleClass('toggled');
     });
 

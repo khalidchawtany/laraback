@@ -21,7 +21,7 @@
     @yield('content')
 @else
     <nav class="navbar navbar-expand navbar-dark bg-primary">
-        <a class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
+        <a class="sidebar-toggle text-light mr-3" href="#"><i class="fa fa-bars"></i></a>
         <a class="navbar-brand" href="{{ route('index') }}">{{ config('app.name') }}</a>
 
         <div class="navbar-collapse collapse">
