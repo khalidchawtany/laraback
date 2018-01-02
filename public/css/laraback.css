@@ -122,6 +122,27 @@ body {
     background-color: #f8f9fa;
 }
 
+/* tooltipster */
+.tooltipster-sidetip .tooltipster-box {
+    background: #272C30;
+    border: 0;
+}
+.tooltipster-sidetip .tooltipster-content {
+    padding: .25rem .5rem;
+    font-size: 80%;
+}
+.tooltipster-sidetip.tooltipster-top .tooltipster-box {
+    margin-bottom: 5px;
+}
+.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
+    border-top-color: #272C30;
+    top: 0;
+}
+.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
+    border: 0;
+}
+
+
 /* xl modal */
 @media (min-width: 992px) {
     .modal-xl {

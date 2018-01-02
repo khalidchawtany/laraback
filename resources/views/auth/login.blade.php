@@ -19,7 +19,7 @@
             <input type="password" name="password" id="password" class="form-control" value="{{ config('laraback.demo') ? 'admin123' : '' }}">
         </div>
 
-        <div class="form-check">
+        <div class="form-check mb-3">
             <label class="form-check-label">
                 <input type="checkbox" name="remember" class="form-check-input">
                 Remember Me

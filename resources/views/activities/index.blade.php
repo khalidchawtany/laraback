@@ -31,7 +31,7 @@
                             var actions = '';
 
                             @can('Read Activities')
-                                actions += ' <button type="button" class="btn btn-primary btn-icon" data-modal="{{ route('activities.data', ':id') }}" title="Data"><i class="fa fa-fw fa-database"></i></button> ';
+                                actions += ' <button type="button" class="btn btn-primary btn-icon tooltipster" data-modal="{{ route('activities.data', ':id') }}" title="Data"><i class="fa fa-fw fa-database"></i></button> ';
                             @endcan
 
                             return actions.replace(/:id/g, full.id);
