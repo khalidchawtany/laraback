@@ -22,7 +22,7 @@ class ActivityController extends Controller
     {
         $datatable = datatables()->of(app(config('laraback.models.activity'))->with('user')->get());
         $datatable->editColumn('user.name', function ($activity) {
-            return $activity->user ? $activity->user->name : 'System';
+            return $activity->user ? $activity->user->name : config('app.name');
         });
 
         return $datatable->toJson();
