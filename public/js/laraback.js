@@ -235,7 +235,7 @@ function flash(alert_class, alert_message) {
 }
 
 function tooltipster() {
-    $('.tooltipster').tooltipster({
+    $('.tooltipster:not(.tooltipstered)').tooltipster({
         delay: 0,
         animationDuration: 0,
         distance: 0
