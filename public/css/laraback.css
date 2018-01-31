@@ -18,8 +18,8 @@ body {
 
 /* sidebar */
 .sidebar {
-    min-width: 220px;
-    max-width: 220px;
+    min-width: 200px;
+    max-width: 200px;
     min-height: calc(100vh - 49px);
     transition: all 0.3s;
 }
@@ -54,7 +54,7 @@ body {
     content: "\f0d8";
 }
 .sidebar.toggled {
-    margin-left: -220px;
+    margin-left: -200px;
 }
 
 .content {
@@ -63,7 +63,7 @@ body {
 
 @media (max-width: 768px) {
     .sidebar {
-        margin-left: -220px;
+        margin-left: -200px;
     }
     .sidebar.toggled {
         margin-left: 0;
