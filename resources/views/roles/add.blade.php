@@ -14,8 +14,8 @@
             <div class="form-group">
                 <label>Permissions</label>
                 <div class="mb-2">
-                    <button type="button" class="btn btn-secondary btn-sm" data-check-all="permissions[]"><i class="fa fa-check-square"></i> Check All</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-uncheck-all="permissions[]"><i class="fa fa-square"></i> Uncheck All</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-check-all="permissions[]"><i class="fa fa-check-square"></i> Check All</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-uncheck-all="permissions[]"><i class="fa fa-square"></i> Uncheck All</button>
                 </div>
                 <ul class="list-group list-group-hover">
                     @foreach ($group_permissions as $group => $permissions)

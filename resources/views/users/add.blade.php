@@ -29,8 +29,8 @@
             <div class="form-group">
                 <label>Roles</label>
                 <div class="mb-2">
-                    <button type="button" class="btn btn-secondary btn-sm" data-check-all="roles[]"><i class="fa fa-check-square"></i> Check All</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-uncheck-all="roles[]"><i class="fa fa-square"></i> Uncheck All</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-check-all="roles[]"><i class="fa fa-check-square"></i> Check All</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-uncheck-all="roles[]"><i class="fa fa-square"></i> Uncheck All</button>
                 </div>
                 @foreach ($roles as $role)
                     <div class="form-check">

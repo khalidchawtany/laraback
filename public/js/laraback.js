@@ -35,7 +35,7 @@ $.extend(true, $.fn.dataTable.defaults, {
         var search_button = $('<button type="button" class="btn btn-primary btn-sm btn-icon ml-1 mb-1 tooltipster" title="Search"><i class="fa fa-fw fa-search"></i></button>').click(function () {
             self.search(filter_input.val()).draw();
         });
-        var reset_button = $('<button type="button" class="btn btn-secondary btn-sm btn-icon ml-1 mb-1 tooltipster" title="Reset"><i class="fa fa-fw fa-undo"></i></button>').click(function () {
+        var reset_button = $('<button type="button" class="btn btn-primary btn-sm btn-icon ml-1 mb-1 tooltipster" title="Reset"><i class="fa fa-fw fa-undo"></i></button>').click(function () {
             filter_input.val('');
             search_button.click();
         });
