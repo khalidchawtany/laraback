@@ -8,6 +8,11 @@ body {
     overflow-x: hidden;
 }
 
+/* close icon size */
+.close {
+    font-size: 1.75rem;
+}
+
 /* make navbar links lighter */
 .navbar-dark .navbar-nav .nav-link, .navbar-dark .navbar-text {
     color: rgba(255, 255, 255, .75);
