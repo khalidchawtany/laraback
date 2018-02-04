@@ -3,7 +3,6 @@
 /* bread_controller_namespace */
 
 /* bread_model_use */
-use App\Http\Controllers\Controller;
 use Kjdion84\Laraback\Traits\ValidateAjax;
 
 class bread_controller_class extends Controller
