@@ -9,7 +9,7 @@
 * Require via composer `composer require kjdion84/laraback:"~1.0"`
 * Publish required files `php artisan vendor:publish --provider="Kjdion84\Laraback\LarabackServiceProvider" --tag="required"`
 * Add `"post-update-cmd": ["php artisan vendor:publish --provider=Kjdion84\\Laraback\\LarabackServiceProvider --tag=public --force"]` to project composer.json `scripts`
-* Add `LarabackUser` trait to `App\User` model
+* Add `LarabackUser` and `Timezone` trait to `App\User` model
 * Uncomment `AuthenticateSession` in `App\Http\Kernel`
 * Configure `.env` file
 * Migrate `php artisan migrate`
