@@ -15,7 +15,7 @@ class RoleController extends Controller
         $this->middleware('can:Browse Roles')->only(['index', 'indexDatatable']);
         $this->middleware('can:Add Roles')->only(['addModal', 'add']);
         $this->middleware('can:Edit Roles')->only(['editModal', 'edit']);
-        $this->middleware('can:Delete Roles')->only('delete');
+        $this->middleware('can:Delete Roles')->only(['deleteModal', 'delete']);
     }
 
     // roles index with table
@@ -86,17 +86,21 @@ class RoleController extends Controller
         ]);
     }
 
-    // delete role
-    public function delete()
+    // show delete role modal
+    public function deleteModal($id)
     {
-        $this->validateAjax(request(), [
-            'id' => 'required',
-        ]);
+        $role = app(config('laraback.models.role'))->findOrFail($id);
 
-        $role = app(config('laraback.models.role'))->findOrFail(request()->input('id'));
+        return view('laraback::roles.delete', compact('role'));
+    }
+
+    // delete role
+    public function delete($id)
+    {
+        $role = app(config('laraback.models.role'))->findOrFail($id);
         $role->delete();
 
-        activity('Deleted Role', request()->all(), $role);
+        activity('Deleted Role', $role->toArray(), $role);
 
         return response()->json([
             'flash' => ['success', 'Role deleted!'],

@@ -26,6 +26,8 @@
             </label>
         </div>
 
+        <input type="hidden" name="timezone" id="moment_tz_guess">
+
         <button type="submit" class="btn btn-primary">@yield('title')</button>
         <a class="btn btn-link" href="{{ route('password.email') }}">Forgot Password</a>
     </form>

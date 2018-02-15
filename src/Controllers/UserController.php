@@ -16,7 +16,7 @@ class UserController extends Controller
         $this->middleware('can:Browse Users')->only(['index', 'indexDatatable']);
         $this->middleware('can:Add Users')->only(['addModal', 'add']);
         $this->middleware('can:Edit Users')->only(['editModal', 'edit', 'passwordModal', 'password']);
-        $this->middleware('can:Delete Users')->only('delete');
+        $this->middleware('can:Delete Users')->only(['deleteModal', 'delete']);
     }
 
     // users index with table
@@ -122,17 +122,21 @@ class UserController extends Controller
         ]);
     }
 
-    // delete user
-    public function delete()
+    // show delete user modal
+    public function deleteModal($id)
     {
-        $this->validateAjax(request(), [
-            'id' => 'required',
-        ]);
+        $user = app(config('laraback.models.user'))->findOrFail($id);
 
-        $user = app(config('auth.providers.users.model'))->findOrFail(request()->input('id'));
+        return view('laraback::users.delete', compact('user'));
+    }
+
+    // delete user
+    public function delete($id)
+    {
+        $user = app(config('laraback.models.user'))->findOrFail($id);
         $user->delete();
 
-        activity('Deleted User', request()->all(), $user);
+        activity('Deleted User', $user->toArray(), $user);
 
         return response()->json([
             'flash' => ['success', 'User deleted!'],

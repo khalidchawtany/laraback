@@ -16,10 +16,4 @@ class DashboardController extends Controller
     {
         return view('laraback::dashboard.index');
     }
-
-    // show delete confirmation modal
-    public function deleteModal($route, $id)
-    {
-        return view('laraback::dashboard.delete', compact('route', 'id'));
-    }
 }

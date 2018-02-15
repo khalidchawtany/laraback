@@ -22,7 +22,7 @@
                 ajax: '{{ route('activities.user.datatable', $user->id) }}',
                 order: [[ 0, 'desc' ]],
                 columns: [
-                    { data: 'created_at', className: 'timezone' },
+                    { data: 'created_at' },
                     { data: 'log' },
                     {
                         render: function (data, type, full) {

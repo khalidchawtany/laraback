@@ -3,9 +3,12 @@
 namespace Kjdion84\Laraback\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Kjdion84\Laraback\Traits\Timezone;
 
 class Permission extends Model
 {
+    use Timezone;
+
     protected $fillable = ['group', 'name'];
 
     // create group

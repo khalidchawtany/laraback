@@ -23,7 +23,7 @@
                 ajax: '{{ route('activities.datatable') }}',
                 order: [[ 0, 'desc' ]],
                 columns: [
-                    { data: 'created_at', className: 'timezone' },
+                    { data: 'created_at' },
                     { data: 'user.name' },
                     { data: 'log' },
                     {

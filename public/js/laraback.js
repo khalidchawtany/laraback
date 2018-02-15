@@ -79,9 +79,6 @@ $(document).ready(function () {
 
         // init tooltips
         tooltipster();
-
-        // show time in user timezone
-        timezones();
     });
 
     // ajax form processing
@@ -209,11 +206,13 @@ $(document).ready(function () {
         });
     });
 
+    // set moment timezone name
+    if ($('#moment_tz_guess').length) {
+        $('#moment_tz_guess').val(moment.tz.guess());
+    }
+
     // init tooltips
     tooltipster();
-
-    // show time in user timezone
-    timezones();
 });
 
 function flash(alert_class, alert_message) {
@@ -229,13 +228,5 @@ function tooltipster() {
         delay: 0,
         animationDuration: 0,
         distance: 0
-    });
-}
-
-function timezones() {
-    $('.timezone').each(function() {
-        if (moment($(this).html(), moment.ISO_8601).isValid()) {
-            $(this).html(moment.utc($(this).html()).local().format('YYYY-MM-DD h:mm A'));
-        }
     });
 }

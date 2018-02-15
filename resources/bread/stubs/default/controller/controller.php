@@ -15,7 +15,7 @@ class bread_controller_class extends Controller
         $this->middleware('can:Browse bread_model_strings')->only(['index', 'indexDatatable']);
         $this->middleware('can:Add bread_model_strings')->only(['addModal', 'add']);
         $this->middleware('can:Edit bread_model_strings')->only(['editModal', 'edit']);
-        $this->middleware('can:Delete bread_model_strings')->only('delete');
+        $this->middleware('can:Delete bread_model_strings')->only(['deleteModal', 'delete']);
     }
 
     public function index()
@@ -75,16 +75,19 @@ class bread_controller_class extends Controller
         ]);
     }
 
-    public function delete()
+    public function deleteModal($id)
     {
-        $this->validateAjax(request(), [
-            'id' => 'required',
-        ]);
+        $bread_model_variable = bread_model_class::findOrFail($id);
 
-        $bread_model_variable = bread_model_class::findOrFail(request()->input('id'));
+        return view('bread_controller_viewbread_model_variables.delete', compact('bread_model_variable'));
+    }
+
+    public function delete($id)
+    {
+        $bread_model_variable = bread_model_class::findOrFail($id);
         $bread_model_variable->delete();
 
-        activity('Deleted bread_model_string', request()->all(), $bread_model_variable);
+        activity('Deleted bread_model_string', $bread_model_variable->toArray(), $bread_model_variable);
 
         return response()->json([
             'flash' => ['success', 'bread_model_string deleted!'],

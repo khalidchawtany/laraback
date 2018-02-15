@@ -35,7 +35,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('roles/add', config('laraback.controllers.role') . '@add');
     Route::get('roles/edit/{id}', config('laraback.controllers.role') . '@editModal')->name('roles.edit');
     Route::patch('roles/edit/{id}', config('laraback.controllers.role') . '@edit');
-    Route::delete('roles/delete', config('laraback.controllers.role') . '@delete')->name('roles.delete');
+    Route::get('roles/delete/{id}', config('laraback.controllers.role') . '@deleteModal')->name('roles.delete');
+    Route::delete('roles/delete/{id}', config('laraback.controllers.role') . '@delete');
 
     // user
     Route::get('users', config('laraback.controllers.user') . '@index')->name('users');
@@ -46,7 +47,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::patch('users/edit/{id}', config('laraback.controllers.user') . '@edit');
     Route::get('users/password/{id}', config('laraback.controllers.user') . '@passwordModal')->name('users.password');
     Route::patch('users/password/{id}', config('laraback.controllers.user') . '@password');
-    Route::delete('users/delete', config('laraback.controllers.user') . '@delete')->name('users.delete');
+    Route::get('users/delete/{id}', config('laraback.controllers.user') . '@deleteModal')->name('users.delete');
+    Route::delete('users/delete/{id}', config('laraback.controllers.user') . '@delete');
 
     // activity
     Route::get('activities', config('laraback.controllers.activity') . '@index')->name('activities');

@@ -5,4 +5,5 @@ Route::get('bread_model_variables/add', 'bread_controller_routes@addModal')->nam
 Route::post('bread_model_variables/add', 'bread_controller_routes@add');
 Route::get('bread_model_variables/edit/{id}', 'bread_controller_routes@editModal')->name('bread_model_variables.edit');
 Route::patch('bread_model_variables/edit/{id}', 'bread_controller_routes@edit');
-Route::delete('bread_model_variables/delete', 'bread_controller_routes@delete')->name('bread_model_variables.delete');
+Route::get('bread_model_variables/delete/{id}', 'bread_controller_routes@deleteModal')->name('bread_model_variables.delete');
+Route::delete('bread_model_variables/delete/{id}', 'bread_controller_routes@delete');

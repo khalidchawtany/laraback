@@ -39,7 +39,7 @@
                                     actions += ' <button type="button" class="btn btn-primary btn-icon tooltipster" data-modal="{{ route('roles.edit', ':id') }}" title="Edit"><i class="fa fa-fw fa-pencil-alt"></i></button> ';
                                 @endcan
                                 @can('Delete Roles')
-                                    actions += ' <button type="button" class="btn btn-danger btn-icon tooltipster" data-modal="{{ route('delete', ['route' => 'roles.delete', 'id' => ':id']) }}" title="Delete"><i class="fa fa-fw fa-trash"></i></button> ';
+                                    actions += ' <button type="button" class="btn btn-danger btn-icon tooltipster" data-modal="{{ route('roles.delete', ':id') }}" title="Delete"><i class="fa fa-fw fa-trash"></i></button> ';
                                 @endcan
                             }
 
