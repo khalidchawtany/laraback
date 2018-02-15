@@ -38,7 +38,7 @@
                                 actions += ' <button type="button" class="btn btn-primary btn-icon tooltipster" data-modal="{{ route('bread_model_variables.edit', ':id') }}" title="Edit"><i class="fa fa-fw fa-pencil-alt"></i></button> ';
                             @endcan
                             @can('Delete bread_model_strings')
-                                actions += ' <button type="button" class="btn btn-danger btn-icon tooltipster" data-modal="{{ route('delete', ['route' => 'bread_model_variables.delete', 'id' => ':id']) }}" title="Delete"><i class="fa fa-fw fa-trash"></i></button> ';
+                                actions += ' <button type="button" class="btn btn-danger btn-icon tooltipster" data-modal="{{ route('bread_model_variables.delete', ':id') }}" title="Delete"><i class="fa fa-fw fa-trash"></i></button> ';
                             @endcan
 
                             return actions.replace(/:id/g, full.id);

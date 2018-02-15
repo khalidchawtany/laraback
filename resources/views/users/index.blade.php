@@ -49,7 +49,7 @@
                                 actions += ' <button type="button" class="btn btn-primary btn-icon tooltipster" data-modal="{{ route('users.password', ':id') }}" title="Change Password"><i class="fa fa-fw fa-lock"></i></button> ';
                             @endcan
                             @can('Delete Users')
-                                actions += ' <button type="button" class="btn btn-danger btn-icon tooltipster" data-modal="{{ route('delete', ['route' => 'users.delete', 'id' => ':id']) }}" title="Delete"><i class="fa fa-fw fa-trash"></i></button> ';
+                                actions += ' <button type="button" class="btn btn-danger btn-icon tooltipster" data-modal="{{ route('users.delete', ':id') }}" title="Delete"><i class="fa fa-fw fa-trash"></i></button> ';
                             @endcan
 
                             return actions.replace(/:id/g, full.id);
