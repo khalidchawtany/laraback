@@ -23,7 +23,7 @@ class SettingController extends Controller
     public function edit()
     {
         $this->validateAjax(request(), [
-            'example' => 'required',
+            'default_timezone' => 'required|timezone',
         ]);
         
         foreach (request()->all() as $key => $value) {

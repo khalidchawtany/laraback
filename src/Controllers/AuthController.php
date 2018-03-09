@@ -19,7 +19,7 @@ class AuthController extends Controller
     {
         $this->middleware('guest')->only(['loginForm', 'login', 'passwordEmailForm', 'passwordEmail', 'passwordResetForm', 'passwordReset']);
         $this->middleware('auth')->only(['profileForm', 'profile', 'passwordChangeForm', 'passwordChange', 'logout']);
-        $this->middleware('GrahamCampbell\Throttle\Http\Middleware\ThrottleMiddleware:5,1')->only(['login', 'passwordEmail', 'passwordReset']);
+        $this->middleware('throttle:5')->only(['login', 'passwordEmail', 'passwordReset']);
     }
 
     // show login form
@@ -131,6 +131,7 @@ class AuthController extends Controller
         $this->validateAjax(request(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . auth()->user()->id,
+            'timezone' => 'required|timezone',
         ]);
 
         auth()->user()->update(request()->all());

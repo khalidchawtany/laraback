@@ -27,6 +27,15 @@
             </div>
 
             <div class="form-group">
+                <label for="timezone">Timezone</label>
+                <select name="timezone" id="timezone" class="form-control">
+                    @foreach(timezones() as $timezone)
+                        <option value="{{ $timezone->name }}"{{ config('settings.default_timezone') == $timezone->name ? ' selected' : '' }}>{{ $timezone->label }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label>Roles</label>
                 <div class="mb-2">
                     <button type="button" class="btn btn-primary btn-sm" data-check-all="roles[]"><i class="fa fa-check-square"></i> Check All</button>

@@ -32,10 +32,10 @@ $.extend(true, $.fn.dataTable.defaults, {
     initComplete: function (settings, json) {
         var self = this.api();
         var filter_input = $('#' + settings.nTable.id + '_filter input').unbind();
-        var search_button = $('<button type="button" class="btn btn-primary btn-sm btn-icon ml-1 mb-1 tooltipster" title="Search"><i class="fa fa-fw fa-search"></i></button>').click(function () {
+        var search_button = $('<button type="button" class="btn btn-primary btn-sm btn-icon ml-1 mb-1" title="Search"><i class="fa fa-fw fa-search"></i></button>').click(function () {
             self.search(filter_input.val()).draw();
         });
-        var reset_button = $('<button type="button" class="btn btn-primary btn-sm btn-icon ml-1 mb-1 tooltipster" title="Reset"><i class="fa fa-fw fa-undo"></i></button>').click(function () {
+        var reset_button = $('<button type="button" class="btn btn-primary btn-sm btn-icon ml-1 mb-1" title="Reset"><i class="fa fa-fw fa-undo"></i></button>').click(function () {
             filter_input.val('');
             search_button.click();
         });
@@ -76,9 +76,6 @@ $(document).ready(function () {
             $(this).css('width', 'auto');
         });
         submitted.removeClass('submitted');
-
-        // init tooltips
-        tooltipster();
     });
 
     // ajax form processing
@@ -205,14 +202,6 @@ $(document).ready(function () {
             }
         });
     });
-
-    // set moment timezone name
-    if ($('#moment_tz_guess').length) {
-        $('#moment_tz_guess').val(moment.tz.guess());
-    }
-
-    // init tooltips
-    tooltipster();
 });
 
 function flash(alert_class, alert_message) {
@@ -220,13 +209,5 @@ function flash(alert_class, alert_message) {
 
     $(html).appendTo('body').delay(3000).queue(function () {
         $(this).remove();
-    });
-}
-
-function tooltipster() {
-    $('.tooltipster:not(.tooltipstered)').tooltipster({
-        delay: 0,
-        animationDuration: 0,
-        distance: 0
     });
 }

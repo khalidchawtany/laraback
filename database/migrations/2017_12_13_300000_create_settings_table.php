@@ -16,8 +16,8 @@ class CreateSettingsTable extends Migration
         });
 
         app(config('laraback.models.setting'))->create([
-            'key' => 'example',
-            'value' => 'Hello World!',
+            'key' => 'default_timezone',
+            'value' => config('app.timezone'),
         ]);
 
         app(config('laraback.models.permission'))->createGroup('Settings', ['Edit Settings']);

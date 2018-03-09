@@ -24,3 +24,25 @@ if (!function_exists('activity')) {
         ]);
     }
 }
+
+// spit out nice list of timezones with offset
+if (!function_exists('timezones')) {
+    function timezones() {
+        $timezones = [];
+
+        foreach (timezone_identifiers_list() as $timezone) {
+            $datetime = new \DateTime('now', new DateTimeZone($timezone));
+            $timezones[] = [
+                'sort' => str_replace(':', '', $datetime->format('P')),
+                'name' => $timezone,
+                'label' => '(UTC '.$datetime->format('P').') '.str_replace('_', ' ', implode(', ', explode('/', $timezone))),
+            ];
+        }
+
+        usort($timezones, function($a, $b) {
+            return $a['sort'] - $b['sort'] ?: strcmp($a['name'], $b['name']);
+        });
+
+        return json_decode(json_encode($timezones));
+    }
+}

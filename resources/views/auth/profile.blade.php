@@ -18,6 +18,15 @@
             <input type="email" name="email" id="email" class="form-control" value="{{ auth()->user()->email }}">
         </div>
 
+        <div class="form-group">
+            <label for="timezone">Timezone</label>
+            <select name="timezone" id="timezone" class="form-control">
+                @foreach(timezones() as $timezone)
+                    <option value="{{ $timezone->name }}"{{ auth()->user()->timezone == $timezone->name ? ' selected' : '' }}>{{ $timezone->label }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">@yield('title')</button>
     </form>
 @endsection

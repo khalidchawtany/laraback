@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Hash;
 
 class CreateAdminUser extends Migration
 {
@@ -10,6 +11,7 @@ class CreateAdminUser extends Migration
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('admin123'),
+            'timezone' => config('app.timezone'),
         ]);
     }
 

@@ -51,6 +51,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
+            'timezone' => 'required|timezone',
         ]);
 
         request()->merge(['password' => Hash::make(request()->input('password'))]);
@@ -81,6 +82,7 @@ class UserController extends Controller
         $this->validateAjax(request(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
+            'timezone' => 'required|timezone',
         ]);
 
         $user = app(config('auth.providers.users.model'))->findOrFail($id);

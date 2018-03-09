@@ -8,11 +8,6 @@ body {
     overflow-x: hidden;
 }
 
-/* close icon size */
-.close {
-    font-size: 1.75rem;
-}
-
 /* make navbar links lighter */
 .navbar-dark .navbar-nav .nav-link, .navbar-dark .navbar-text {
     color: rgba(255, 255, 255, .75);
@@ -91,11 +86,6 @@ body {
     line-height: 1.2;
 }
 
-/* add cursor to buttons & checks */
-.btn, .close, .form-check-label {
-    cursor: pointer;
-}
-
 /* btn for icons */
 .btn-icon {
     padding: .375rem .5rem;
@@ -130,26 +120,10 @@ body {
     background-color: #f8f9fa;
 }
 
-/* tooltipster */
-.tooltipster-sidetip .tooltipster-box {
-    background: #272C30;
-    border: 0;
+/* close icon size */
+.close {
+    font-size: 1.75rem;
 }
-.tooltipster-sidetip .tooltipster-content {
-    padding: .25rem .5rem;
-    font-size: 80%;
-}
-.tooltipster-sidetip.tooltipster-top .tooltipster-box {
-    margin-bottom: 5px;
-}
-.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
-    border-top-color: #272C30;
-    top: 0;
-}
-.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
-    border: 0;
-}
-
 
 /* xl modal */
 @media (min-width: 992px) {

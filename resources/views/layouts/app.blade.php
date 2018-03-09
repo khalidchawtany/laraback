@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="{{ asset('laraback/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('laraback/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('laraback/css/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('laraback/css/tooltipster.min.css') }}">
     <link rel="stylesheet" href="{{ asset('laraback/css/laraback.css') }}">
 </head>
 <body{!! session('flash') ? ' data-flash-class="'.session('flash.0').'" data-flash-message="'.session('flash.1').'"' : '' !!}>
@@ -67,8 +66,6 @@
 <script src="{{ asset('laraback/js/jquery.min.js') }}"></script>
 <script src="{{ asset('laraback/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('laraback/js/datatables.min.js') }}"></script>
-<script src="{{ asset('laraback/js/moment.min.js') }}"></script>
-<script src="{{ asset('laraback/js/tooltipster.min.js') }}"></script>
 <script src="{{ asset('laraback/js/laraback.js') }}"></script>
 @stack('scripts')
 

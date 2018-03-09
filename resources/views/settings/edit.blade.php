@@ -9,8 +9,12 @@
         {{ csrf_field() }}
 
         <div class="form-group">
-            <label for="example">Example</label>
-            <input name="example" id="example" class="form-control" value="{{ config('settings.example') }}">
+            <label for="default_timezone">Default Timezone</label>
+            <select name="default_timezone" id="default_timezone" class="form-control">
+                @foreach(timezones() as $timezone)
+                    <option value="{{ $timezone->name }}"{{ config('settings.default_timezone') == $timezone->name ? ' selected' : '' }}>{{ $timezone->label }}</option>
+                @endforeach
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Edit Settings</button>
