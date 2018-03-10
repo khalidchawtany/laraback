@@ -127,7 +127,7 @@ class UserController extends Controller
     // show delete user modal
     public function deleteModal($id)
     {
-        $user = app(config('laraback.models.user'))->findOrFail($id);
+        $user = app(config('auth.providers.users.model'))->findOrFail($id);
 
         return view('laraback::users.delete', compact('user'));
     }
@@ -135,7 +135,7 @@ class UserController extends Controller
     // delete user
     public function delete($id)
     {
-        $user = app(config('laraback.models.user'))->findOrFail($id);
+        $user = app(config('auth.providers.users.model'))->findOrFail($id);
         $user->delete();
 
         activity('Deleted User', $user->toArray(), $user);

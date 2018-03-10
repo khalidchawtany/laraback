@@ -7,7 +7,6 @@ Route::group(['middleware' => 'web'], function () {
 
     // dashboard
     Route::get('dashboard', config('laraback.controllers.dashboard') . '@index')->name('dashboard');
-    Route::get('delete/{route}/{id}', config('laraback.controllers.dashboard') . '@deleteModal')->name('delete');
 
     // auth
     Route::get('login', config('laraback.controllers.auth') . '@loginForm')->name('login');

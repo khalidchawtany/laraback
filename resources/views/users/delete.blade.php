@@ -7,7 +7,7 @@
     </div>
 
     <div class="modal-footer">
-        <form method="POST" action="{{ route('users.delete', $role->id) }}" novalidate>
+        <form method="POST" action="{{ route('users.delete', $user->id) }}" novalidate>
             {{ method_field('DELETE') }}
             {{ csrf_field() }}
             <button type="submit" class="btn btn-danger">Yes</button>
