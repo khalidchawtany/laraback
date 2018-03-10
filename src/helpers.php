@@ -32,10 +32,12 @@ if (!function_exists('timezones')) {
 
         foreach (timezone_identifiers_list() as $timezone) {
             $datetime = new \DateTime('now', new DateTimeZone($timezone));
+            $offset = $datetime->format('P');
             $timezones[] = [
                 'sort' => str_replace(':', '', $datetime->format('P')),
                 'name' => $timezone,
-                'label' => '(UTC '.$datetime->format('P').') '.str_replace('_', ' ', implode(', ', explode('/', $timezone))),
+                'offset' => $offset,
+                'label' => '(UTC '.$offset.') '.str_replace('_', ' ', implode(', ', explode('/', $timezone))),
             ];
         }
 
