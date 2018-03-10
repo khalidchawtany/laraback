@@ -8,13 +8,13 @@
 
 ## Install Laraback
 
+* Configure `.env` file with app name, URL, database, & mail settings
 * Require via composer `composer require kjdion84/laraback:"~2.0"`
 * Publish required files `php artisan vendor:publish --provider="Kjdion84\Laraback\LarabackServiceProvider" --tag="required"`
 * Add `"post-update-cmd": ["php artisan vendor:publish --provider=Kjdion84\\Laraback\\LarabackServiceProvider --tag=public --force"]` to project composer.json `scripts`
 * Add `LarabackUser` and `Timezone` trait to `App\User` model
 * Add `timezone` fillable to `App\User` model
 * Uncomment `AuthenticateSession` in `App\Http\Kernel`
-* Configure `.env` file with app name, URL, database, & mail settings
 * Migrate `php artisan migrate`
 * Remove `app\Http\Controllers\Auth` folder
 * Remove `resources/views/welcome.blade.php` file
