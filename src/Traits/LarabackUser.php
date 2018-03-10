@@ -4,13 +4,6 @@ namespace Kjdion84\Laraback\Traits;
 
 trait LarabackUser
 {
-    // fillables
-    public function __construct($attributes = []) {
-        parent::__construct($attributes);
-
-        $this->fillable[] = 'timezone';
-    }
-
     // roles relationship
     public function roles()
     {
