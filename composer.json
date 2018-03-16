@@ -1,6 +1,6 @@
 {
   "name": "kjdion84/laraback",
-  "description": "A backend package for Laravel 5.6 including demo mode, user activity logs, auth integration, roles/permissions, settings, Bootstrap 4 with responsive/collapsing sidebar, FontAwesome 5, Datatables, BREAD command/generator, AJAX forms/validation, & more.",
+  "description": "A backend/admin package for Laravel 5.6 including demo mode, user activity logs, auth integration, roles/permissions, settings, Bootstrap 4 with responsive/collapsing sidebar, FontAwesome 5, Datatables, BREAD command/generator, AJAX forms/validation, & more.",
   "homepage": "https://github.com/kjdion84/laraback",
   "license": "MIT",
   "authors": [

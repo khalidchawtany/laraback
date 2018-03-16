@@ -28,7 +28,7 @@ class LarabackServiceProvider extends ServiceProvider
             $this->commands([Commands\BreadCommand::class]);
         }
         $this->publishes([__DIR__ . '/../resources/bread/Example.php' => resource_path('bread/Example.php')], 'bread_example');
-        $this->publishes([__DIR__ . '/../resources/bread/stubs' => resource_path('bread/stubs/default')], 'bread_stubs');
+        $this->publishes([__DIR__ . '/../resources/bread/stubs' => resource_path('bread/stubs')], 'bread_stubs');
 
         // views
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laraback');
