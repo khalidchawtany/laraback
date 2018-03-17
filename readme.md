@@ -1,14 +1,14 @@
+Laraback is a backend/admin package for Laravel 5.6 including demo mode, user activity logs, auth integration, roles/permissions, settings, Bootstrap 4 with responsive/collapsing sidebar, FontAwesome 5, Datatables, BREAD command/generator, AJAX forms/validation, & more.
+
+# Demo & Tutorial Videos
+
+* Demo: http://laraback.kjdion.com
+* Install & Config: https://youtu.be/zdZLSbbwrF0
+* BREAD Command: https://youtu.be/DgC48L662ds
+
 # Installation
 
-## Install Laravel (if not done)
-
-* Create project `laravel new {project_name}`
-* Create `utf8mb4_unicode_ci` database
-* Create virtual host pointing to `/public`
-
-## Install Laraback
-
-* Configure `.env` file with app name, URL, database, & mail settings
+* Configure Laravel `.env` file with app name, URL, database, & mail settings
 * Require via composer `composer require kjdion84/laraback:"~2.0"`
 * Publish required files `php artisan vendor:publish --provider="Kjdion84\Laraback\LarabackServiceProvider" --tag="required"`
 * Add `"post-update-cmd": ["php artisan vendor:publish --provider=Kjdion84\\Laraback\\LarabackServiceProvider --tag=public --force"]` to project composer.json `scripts`
@@ -16,15 +16,8 @@
 * Add `timezone` fillable to `App\User` model
 * Uncomment `AuthenticateSession` in `App\Http\Kernel`
 * Migrate `php artisan migrate`
-* Remove `app\Http\Controllers\Auth` folder
-* Remove `resources/views/welcome.blade.php` file
-* Remove default `/` route in `routes/web.php`
+* Remove `app\Http\Controllers\Auth` folder, `resources/views/welcome.blade.php` file, and `/` route in `routes/web.php`
 * Publish BREAD example `php artisan vendor:publish --provider="Kjdion84\Laraback\LarabackServiceProvider" --tag="bread_example"`
-
-## PHPStorm Helpers (optional)
-
-* Enable [PHPStorm Laravel](https://plugins.jetbrains.com/plugin/7532-laravel-plugin) plugin
-* Create [_ide_helper.php](https://gist.githubusercontent.com/barryvdh/5227822/raw/4be028a27c4ec782965bb8f2fdcb4c08c71a441d/_ide_helper.php) file
 
 ## Logging In
 
@@ -83,7 +76,7 @@ Object values include `name`, `offset`, and `label` for each timezone.
 
 ## Traits
 
-### InTime
+### Timezone
 
 This trait will convert (via accessors) the model `created_at`, `updated_at`, and `deleted_at` attributes to the users timezone.
 
@@ -201,3 +194,8 @@ After doing so, simply rename the folder `default` to whatever you want. Now you
 # Issues & Support
 
 Use Github issues for bug reports, suggestions, help, & support.
+
+# Donations
+
+* [Patreon](https://www.patreon.com/kjdion84)
+* [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=kjdion84@gmail.com)
