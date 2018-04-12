@@ -8,7 +8,7 @@ class AddUserTimezone extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('timezone');
+            $table->string('timezone')->nullable();
         });
     }
 

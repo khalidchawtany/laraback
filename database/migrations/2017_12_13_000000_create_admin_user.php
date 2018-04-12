@@ -11,7 +11,6 @@ class CreateAdminUser extends Migration
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('admin123'),
-            'timezone' => config('app.timezone'),
         ]);
     }
 

@@ -26,7 +26,7 @@ trait Timezone
     {
         $carbon = Carbon::parse($value);
 
-        if (auth()->check()) {
+        if (auth()->check() && auth()->user()->timezone) {
             $carbon->tz(auth()->user()->timezone);
         }
 

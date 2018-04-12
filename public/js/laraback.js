@@ -202,6 +202,11 @@ $(document).ready(function () {
             }
         });
     });
+
+    // set user timezone on login
+    if ($('#login_timezone').length) {
+        $('#login_timezone').val(Intl.DateTimeFormat().resolvedOptions().timeZone);
+    }
 });
 
 function flash(alert_class, alert_message) {

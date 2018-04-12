@@ -39,7 +39,7 @@ class AuthController extends Controller
         if (auth()->guard()->attempt(request()->only(['email', 'password']), request()->has('remember'))) {
             request()->session()->regenerate();
 
-            if (request()->input('timezone')) {
+            if (request()->input('timezone') && !auth()->user()->timezone) {
                 auth()->user()->timezone = request()->input('timezone');
                 auth()->user()->save();
             }
