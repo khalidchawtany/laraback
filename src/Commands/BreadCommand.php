@@ -227,7 +227,7 @@ class BreadCommand extends Command
 
             // loop through all view stubs and create
             foreach ($views as $view) {
-                if (!$view->isDot() && !$view->isDir() && $view->getFilename() != 'navbar.blade.php') {
+                if (!$view->isDot() && !$view->isDir()) {
                     $this->createFile('views/' . $view->getFilename(), $target_folder . '/' . $view->getFilename());
                 }
             }
@@ -236,7 +236,7 @@ class BreadCommand extends Command
 
     public function updateDashboard()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/views/dashboard.blade.php';
+        $file = base_path($this->options['paths']['stubs']) . '/components/dashboard.blade.php';
         //If no navbar defined return
         if(! array_key_exists ( 'dashboard', $this->options['paths'] ) )
         {
@@ -259,7 +259,7 @@ class BreadCommand extends Command
 
     public function updateNavbar()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/views/navbar.blade.php';
+        $file = base_path($this->options['paths']['stubs']) . '/components/navbar.blade.php';
         //If no navbar defined return
         if(! array_key_exists ( 'navbar', $this->options['paths'] ) )
         {
