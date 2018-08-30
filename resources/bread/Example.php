@@ -8,6 +8,7 @@ return [
         'controller' => 'app/Http/Controllers',
         'model' => 'app',
         'views' => 'resources/views',
+        'dashboard' => 'resources/views/layouts/dashboard.blade.php',
         'navbar' => 'resources/views/vendor/laraback/layouts/app.blade.php',
         'routes' => 'routes/web.php',
     ],

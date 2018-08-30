@@ -164,11 +164,17 @@ class BreadCommand extends Command
         // create migration file
         $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variable'] . '_table.php'));
 
+        // create requests files
+        $this->createRequests();
+
         // create view files
         $this->createViews();
 
         // add menu item to layout navbar
         $this->updateNavbar();
+
+        // add dock item to layout dashboard
+        $this->updateDashboard();
 
         // append routes to web
         $this->updateRoutes();
@@ -181,6 +187,28 @@ class BreadCommand extends Command
         if (file_exists($file)) {
             file_put_contents($target, $this->replaceContent($file));
             $this->line('Created file: ' . $target);
+        }
+    }
+
+    public function createRequests()
+    {
+        $requests_folder = base_path($this->options['paths']['stubs']) . '/requests';
+
+        if (file_exists($requests_folder)) {
+            $requests = new DirectoryIterator($requests_folder);
+            $target_folder = base_path($this->options['paths']['requests']) . '/' . $this->replace['model']['bread_model_variables'];
+
+            // create target folder if it doesn't exist
+            if (!file_exists($target_folder)) {
+                mkdir($target_folder, 0777, true);
+            }
+
+            // loop through all request stubs and create
+            foreach ($requests as $request) {
+                if (!$request->isDot() && !$request->isDir() && $request->getFilename() != 'navbar.blade.php') {
+                    $this->createFile('requests/' . $request->getFilename(), $target_folder . '/' . $request->getFilename());
+                }
+            }
         }
     }
 
@@ -206,9 +234,37 @@ class BreadCommand extends Command
         }
     }
 
+    public function updateDashboard()
+    {
+        $file = base_path($this->options['paths']['stubs']) . '/views/dashboard.blade.php';
+        //If no navbar defined return
+        if(! array_key_exists ( 'dashboard', $this->options['paths'] ) )
+        {
+            return;
+        }
+        $target = base_path($this->options['paths']['dashboard']);
+        $hook = '<!-- bread_dashboard -->';
+
+        if (file_exists($file) && file_exists($target)) {
+            $file_content = $this->replaceContent($file);
+            $target_content = file_get_contents($target);
+
+            if (strpos($target_content, $file_content) === false) {
+                file_put_contents($target, str_replace($hook, $hook . PHP_EOL . $file_content, $target_content));
+                $this->line('Updated file: ' . $target);
+            }
+        }
+    }
+
+
     public function updateNavbar()
     {
         $file = base_path($this->options['paths']['stubs']) . '/views/navbar.blade.php';
+        //If no navbar defined return
+        if(! array_key_exists ( 'navbar', $this->options['paths'] ) )
+        {
+            return;
+        }
         $target = base_path($this->options['paths']['navbar']);
         $hook = '<!-- bread_navbar -->';
 

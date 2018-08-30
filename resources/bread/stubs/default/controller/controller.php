@@ -2,20 +2,22 @@
 
 /* bread_controller_namespace */
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
+
 /* bread_model_use */
-use Kjdion84\Laraback\Traits\ValidateAjax;
+
+use App\Http\Requests\bread_model_class\Storebread_model_class;
+use App\Http\Requests\bread_model_class\Updatebread_model_class;
+use App\Http\Requests\bread_model_class\Removebread_model_class;
 
 class bread_controller_class extends Controller
 {
-    use ValidateAjax;
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:Browse bread_model_strings')->only(['index', 'indexDatatable']);
-        $this->middleware('can:Add bread_model_strings')->only(['addModal', 'add']);
-        $this->middleware('can:Edit bread_model_strings')->only(['editModal', 'edit']);
-        $this->middleware('can:Delete bread_model_strings')->only(['deleteModal', 'delete']);
     }
 
     public function index()
@@ -23,76 +25,38 @@ class bread_controller_class extends Controller
         return view('bread_controller_viewbread_model_variables.index');
     }
 
-    public function indexDatatable()
+    public function list(Request $request)
     {
-        return datatables()->of(bread_model_class::query())->toJson();
+        return QueryBuilder::for(bread_model_class::class)
+        ->allowedFilters("/* bread_fillable */")
+        ->jsonPaginate();
     }
 
-    public function addModal()
+    protected function create(Storebread_model_class $request)
     {
-        return view('bread_controller_viewbread_model_variables.add');
+        $bread_model_variable = bread_model_class::create($request->input());
+
+        return ezReturnSuccessMessage('bread_model_string created successfully!', $bread_model_variable->id);
     }
 
-    public function add()
+    public function update(Updatebread_model_class $request)
     {
-        $this->validateAjax(request(), [
-            /* bread_rule_add */
-        ]);
+    	$bread_model_variable = bread_model_class::findOrFail($request->id);
 
-        $bread_model_variable = bread_model_class::create(request()->all());
+        $bread_model_variable->update($request->input());
 
-        activity('Added bread_model_string', request()->all(), $bread_model_variable);
-
-        return response()->json([
-            'flash' => ['success', 'bread_model_string added!'],
-            'dismiss_modal' => true,
-            'reload_datatables' => true,
-        ]);
+        return ezReturnSuccessMessage('bread_model_string updated successfully!');
     }
 
-    public function editModal($id)
+    public function destroy(Request $request)
     {
-        $bread_model_variable = bread_model_class::findOrFail($id);
 
-        return view('bread_controller_viewbread_model_variables.edit', compact('bread_model_variable'));
+    	$bread_model_variable = bread_model_class::findOrFail($request->id);
+
+    	$bread_model_variable->delete();
+
+    	return ezReturnSuccessMessage('bread_model_string removed successfully!');
+
     }
 
-    public function edit($id)
-    {
-        $this->validateAjax(request(), [
-            /* bread_rule_edit */
-        ]);
-
-        $bread_model_variable = bread_model_class::findOrFail($id);
-        $bread_model_variable->update(request()->all());
-
-        activity('Edited bread_model_string', request()->all(), $bread_model_variable);
-
-        return response()->json([
-            'flash' => ['success', 'bread_model_string edited!'],
-            'dismiss_modal' => true,
-            'reload_datatables' => true,
-        ]);
-    }
-
-    public function deleteModal($id)
-    {
-        $bread_model_variable = bread_model_class::findOrFail($id);
-
-        return view('bread_controller_viewbread_model_variables.delete', compact('bread_model_variable'));
-    }
-
-    public function delete($id)
-    {
-        $bread_model_variable = bread_model_class::findOrFail($id);
-        $bread_model_variable->delete();
-
-        activity('Deleted bread_model_string', $bread_model_variable->toArray(), $bread_model_variable);
-
-        return response()->json([
-            'flash' => ['success', 'bread_model_string deleted!'],
-            'dismiss_modal' => true,
-            'reload_datatables' => true,
-        ]);
-    }
 }
