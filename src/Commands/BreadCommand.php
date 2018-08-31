@@ -217,7 +217,8 @@ class BreadCommand extends Command
             // loop through all request stubs and create
             foreach ($requests as $request) {
                 if (!$request->isDot() && !$request->isDir()) {
-                    $this->createFile('requests/' . $request->getFilename(), $target_folder . '/' . $request->getFilename());
+                    $this->createFile('requests/' . $request->getFilename(),
+                        $target_folder . '/' .substr($request->getFilename(),0,-4) . $this->replace['model']['bread_model_class'] . '.php');
                 }
             }
         }
