@@ -8,6 +8,7 @@ return [
         'controller' => 'App/Http/Controllers',
         'model'      => 'app',
         'factory'    => 'database/factories',
+        'seed'       => 'database/seeds',
         'views'      => 'resources/views',
         'request'    => 'App/Http/Requests',
         'dashboard'  => 'resources/views/layouts/dashboard.blade.php',

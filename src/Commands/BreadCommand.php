@@ -51,6 +51,7 @@ class BreadCommand extends Command
             'bread_model_variables' => str_replace(' ', '_', strtolower(str_plural($string))),
             'bread_model_variable' => str_replace(' ', '_', strtolower($string)),
             'bread_model_strings' => str_plural($string),
+            'bread_model_classes' => str_plural($model),
             'bread_model_string' => $string,
             '/* bread_model_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['model']) . ';',
             '/* bread_model_use */' => 'use '. $this->replaceNamespace($this->options['paths']['model']) . '\\' . $model . ';',
@@ -171,6 +172,10 @@ class BreadCommand extends Command
         // create factory file
         if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
         $this->createFile('factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factoy.php');
+
+        // create database seeder file
+        if (!file_exists(base_path($this->options['paths']['seed']))) mkdir(base_path($this->options['paths']['seed']), 0777, true);
+        $this->createFile('dbseed.php', base_path($this->options['paths']['seed']) . '/' . $this->replace['model']['bread_model_classes'] . 'TableSeeder.php');
 
         // create migration file
         $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variable'] . '_table.php'));
