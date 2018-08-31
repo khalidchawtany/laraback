@@ -7,6 +7,7 @@ return [
         'stubs'      => 'vendor/kjdion84/laraback/resources/bread/stubs/default',
         'controller' => 'App/Http/Controllers',
         'model'      => 'app',
+        'factory'    => 'database/factories',
         'views'      => 'resources/views',
         'request'    => 'App/Http/Requests',
         'dashboard'  => 'resources/views/layouts/dashboard.blade.php',
@@ -19,6 +20,7 @@ return [
         'title' => [
             'schema' => 'string("bread_attribute_name")->unique()',
             'input' => 'text',
+            'factory' => 'TODO',
             'rule_store' => 'required|unique:bread_model_variables',
             'rule_update' => 'required|unique:bread_model_variables,bread_attribute_name,$id',
             'datatable' => true,
