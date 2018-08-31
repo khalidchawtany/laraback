@@ -170,7 +170,7 @@ class BreadCommand extends Command
 
         // create factory file
         if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
-        $this->createFile('factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . '.php');
+        $this->createFile('factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factoy.php');
 
         // create migration file
         $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variable'] . '_table.php'));
