@@ -4,13 +4,14 @@ return [
 
     // do not add trailing slashes
     'paths' => [
-        'stubs' => 'vendor/kjdion84/laraback/resources/bread/stubs/default',
-        'controller' => 'app/Http/Controllers',
-        'model' => 'app',
-        'views' => 'resources/views',
-        'dashboard' => 'resources/views/layouts/dashboard.blade.php',
-        'navbar' => 'resources/views/vendor/laraback/layouts/app.blade.php',
-        'routes' => 'routes/web.php',
+        'stubs'      => 'vendor/kjdion84/laraback/resources/bread/stubs/default',
+        'controller' => 'App/Http/Controllers',
+        'model'      => 'app',
+        'views'      => 'resources/views',
+        'request'    => 'App/Http/Requests',
+        'dashboard'  => 'resources/views/layouts/dashboard.blade.php',
+        'navbar'     => 'resources/views/vendor/laraback/layouts/app.blade.php',
+        'routes'     => 'routes/web.php',
     ],
 
     // model attribute definitions
@@ -18,15 +19,15 @@ return [
         'title' => [
             'schema' => 'string("bread_attribute_name")->unique()',
             'input' => 'text',
-            'rule_add' => 'required|unique:bread_model_variables',
-            'rule_edit' => 'required|unique:bread_model_variables,bread_attribute_name,$id',
+            'rule_store' => 'required|unique:bread_model_variables',
+            'rule_update' => 'required|unique:bread_model_variables,bread_attribute_name,$id',
             'datatable' => true,
         ],
         'detail' => [
             'schema' => 'string("bread_attribute_name")',
             'input' => 'text',
-            'rule_add' => 'required',
-            'rule_edit' => 'required',
+            'rule_store' => 'required',
+            'rule_update' => 'required',
             'datatable' => true,
         ],
         'description' => [

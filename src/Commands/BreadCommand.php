@@ -58,6 +58,7 @@ class BreadCommand extends Command
             'bread_controller_view' => $this->replaceView($this->options['paths']['views']),
             'bread_controller_routes' => ltrim(str_replace('App\\Http\\Controllers', '', $this->replaceNamespace($this->options['paths']['controller'])) . '\\' . $controller, '\\'),
             '/* bread_controller_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['controller']) . ';',
+            '/* bread_request_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['request']) . '\\' . str_replace(' ', '',str_plural($string)) . ';',
         ];
 
         return $this;
@@ -97,9 +98,9 @@ class BreadCommand extends Command
             }
 
             // rule
-            foreach (['add', 'edit'] as $action) {
+            foreach (['store', 'update'] as $action) {
                 if (isset($options['rule_' . $action])) {
-                    $replace['/* bread_rule_' . $action . ' */'][] = $this->replaceAttribute('controller/rule/' . $action . '.php', $name, $options);
+                    $replace['/* bread_rule_' . $action . ' */'][] = $this->replaceAttribute('requests/rule/' . $action . '.php', $name, $options);
                 }
             }
 
@@ -196,7 +197,7 @@ class BreadCommand extends Command
 
         if (file_exists($requests_folder)) {
             $requests = new DirectoryIterator($requests_folder);
-            $target_folder = base_path($this->options['paths']['requests']) . '/' . $this->replace['model']['bread_model_variables'];
+            $target_folder = base_path($this->options['paths']['request']) . '/' . $this->replace['model']['bread_model_variables'];
 
             // create target folder if it doesn't exist
             if (!file_exists($target_folder)) {
@@ -205,7 +206,7 @@ class BreadCommand extends Command
 
             // loop through all request stubs and create
             foreach ($requests as $request) {
-                if (!$request->isDot() && !$request->isDir() && $request->getFilename() != 'navbar.blade.php') {
+                if (!$request->isDot() && !$request->isDir()) {
                     $this->createFile('requests/' . $request->getFilename(), $target_folder . '/' . $request->getFilename());
                 }
             }
