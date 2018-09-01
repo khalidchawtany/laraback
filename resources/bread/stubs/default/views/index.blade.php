@@ -38,27 +38,8 @@
       updateUrl: 'bread_model_variables/update',
       destroyUrl: 'bread_model_variables/destroy',
 
-        // These are columns
-        // "/* bread_fillable */"
-
         columns: [[
-          {field:'name',title:'Name',width:50,
-            editor:{
-              type:'validatebox',
-              options:{
-                required:true
-              }
-            }
-          },
-
-          {field:'price',title:'Price',width:50,
-            editor:{
-              type:'validatebox',
-              options:{
-                required:false
-              }
-            }
-          },
+          /* bread_datagrid_column */
 
           {field:'action',title:'Action',width:100,align:'center',
               formatter:function(value,row,index){

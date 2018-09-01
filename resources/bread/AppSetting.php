@@ -25,6 +25,7 @@ return [
             'rule_store'  => 'bail|string',
             'rule_update' => 'bail|string',
             'datatable'   => true,
+            'datagrid_column' =>true,
         ],
         'value' => [
             'schema'      => "text('bread_attribute_name')->nullable",
@@ -33,6 +34,7 @@ return [
             'rule_store'  => 'bail|string',
             'rule_update' => 'bail|string',
             'datatable'   => true,
+            'datagrid_column' => true,
         ],
         'user_id' => [
             'schema'  => "unsignedInteger('bread_attribute_name')",
