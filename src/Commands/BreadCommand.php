@@ -92,10 +92,9 @@ class BreadCommand extends Command
             }
 
             // replace factory template with the factory/faker.php for each attribute
-            if (!isset($options['factory'])) {
-                $options['factory'] = 'text';
+            if (isset($options['factory'])) {
+                $replace['/* bread_factory */'][] = $this->replaceAttribute('factory/faker.php', $name, $options);
             }
-            $replace['/* bread_factory */'][] = $this->replaceAttribute('factory/faker.php', $name, $options);
 
             // set foreing key
             if (!isset($options['foreign'])) {
@@ -140,7 +139,12 @@ class BreadCommand extends Command
         $file = base_path($this->options['paths']['stubs']) . '/' . $file;
 
         if (file_exists($file)) {
-            $content = substr(file_get_contents($file), 0, -1);
+            $content = file_get_contents($file);
+
+            // if the last char is a newline remove it
+            if (substr($content, -1) == "\n"){
+                $content = substr($content, 0, -1);
+            }
 
             foreach ($options as $key => $value) {
                 $content = str_replace('bread_attribute_' . $key, $value, $content);
@@ -189,7 +193,7 @@ class BreadCommand extends Command
         $this->updateDatabaseSeeder();
 
         // create migration file
-        $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variable'] . '_table.php'));
+        $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variables'] . '_table.php'));
 
         // create requests files
         $this->createRequests();

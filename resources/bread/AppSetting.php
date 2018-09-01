@@ -29,6 +29,7 @@ return [
         'value' => [
             'schema'      => "text('bread_attribute_name')->nullable",
             'input'       => 'text',
+            'factory'     => 'text',
             'rule_store'  => 'bail|string',
             'rule_update' => 'bail|string',
             'datatable'   => true,

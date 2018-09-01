@@ -35,9 +35,10 @@ return [
             'datatable'   => true,
         ],
         'user_id' => [
-            'schema'  => "unsignedInteger('bread_attribute_name')",
-            'input'   => 'textarea',
-            'foreign' => "foreign('user_id')->references('id')->on('users')"
+            'schema'    => "unsignedInteger('bread_attribute_name')",
+            'input'     => 'textarea',
+            'foreign'   => "foreign('user_id')->references('id')->on('users')",
+            'datatable' => false,
         ],
     ],
 
