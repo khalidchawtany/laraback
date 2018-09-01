@@ -11,5 +11,6 @@ $factory->define(App\bread_model_class::class, function (Faker $faker) {
         /* bread_factory */
 
         'user_id' => $users->random(),
+
     ];
 });

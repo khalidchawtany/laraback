@@ -13,8 +13,9 @@ class Createbread_model_classTable extends Migration
             $table->increments('id');
             /* bread_schema */
             $table->timestamps();
-        });
 
+            /* bread_foreign */
+        });
     }
 
     public function down()

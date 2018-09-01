@@ -97,6 +97,14 @@ class BreadCommand extends Command
             }
             $replace['/* bread_factory */'][] = $this->replaceAttribute('factory/faker.php', $name, $options);
 
+            // set foreing key
+            if (!isset($options['foreign'])) {
+                $options['foreign'] = '';
+            } else {
+                $options['foreign'] =  '$table->'.$options['foreign'] . ';';
+            }
+            $replace['/* bread_foreign */'][] = $this->replaceAttribute('database/foreign.php', $name, $options);
+
             // input
             if (isset($options['input'])) {
                 foreach (['add', 'edit'] as $action) {
@@ -132,7 +140,7 @@ class BreadCommand extends Command
         $file = base_path($this->options['paths']['stubs']) . '/' . $file;
 
         if (file_exists($file)) {
-            $content = file_get_contents($file);
+            $content = substr(file_get_contents($file), 0, -1);
 
             foreach ($options as $key => $value) {
                 $content = str_replace('bread_attribute_' . $key, $value, $content);
@@ -240,7 +248,7 @@ $hook = '    }
 
         if (file_exists($requests_folder)) {
             $requests = new DirectoryIterator($requests_folder);
-            $target_folder = base_path($this->options['paths']['request']) . '/' . $this->replace['model']['bread_model_variables'];
+            $target_folder = base_path($this->options['paths']['request']) . '/' . $this->replace['model']['bread_model_classes'];
 
             // create target folder if it doesn't exist
             if (!file_exists($target_folder)) {
