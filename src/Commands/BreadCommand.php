@@ -171,11 +171,14 @@ class BreadCommand extends Command
 
         // create factory file
         if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
-        $this->createFile('factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factoy.php');
+        $this->createFile('factory/factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factoy.php');
 
         // create database seeder file
         if (!file_exists(base_path($this->options['paths']['seed']))) mkdir(base_path($this->options['paths']['seed']), 0777, true);
-        $this->createFile('dbseed.php', base_path($this->options['paths']['seed']) . '/' . $this->replace['model']['bread_model_classes'] . 'TableSeeder.php');
+        $this->createFile('database/table_seeder.php', base_path($this->options['paths']['seed']) . '/' . $this->replace['model']['bread_model_classes'] . 'TableSeeder.php');
+
+        // update database seeder
+        $this->updateDatabaseSeeder();
 
         // create migration file
         $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variable'] . '_table.php'));
@@ -205,6 +208,31 @@ class BreadCommand extends Command
             $this->line('Created file: ' . $target);
         }
     }
+
+    public function updateDatabaseSeeder()
+    {
+        $file = base_path($this->options['paths']['stubs']) . '/database/dbseeder.php';
+        //If no navbar defined return
+        if(! array_key_exists ( 'seed', $this->options['paths'] ) )
+        {
+            return;
+        }
+        $target = base_path($this->options['paths']['seed']. '/DatabaseSeeder.php');
+        //$hook = '/* bread_dbseeder */';
+$hook = '    }
+}';
+
+        if (file_exists($file) && file_exists($target)) {
+            $file_content = $this->replaceContent($file);
+            $target_content = file_get_contents($target);
+
+            if (strpos($target_content, $file_content) === false) {
+                file_put_contents($target, str_replace($hook, $file_content . $hook  , $target_content));
+                $this->line('Updated file: ' . $target);
+            }
+        }
+    }
+
 
     public function createRequests()
     {
@@ -253,7 +281,7 @@ class BreadCommand extends Command
 
     public function updateDashboard()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/components/dashboard.blade.php';
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/dashboard.blade.php';
         //If no navbar defined return
         if(! array_key_exists ( 'dashboard', $this->options['paths'] ) )
         {
@@ -276,7 +304,7 @@ class BreadCommand extends Command
 
     public function updateNavbar()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/components/navbar.blade.php';
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/navbar.blade.php';
         //If no navbar defined return
         if(! array_key_exists ( 'navbar', $this->options['paths'] ) )
         {

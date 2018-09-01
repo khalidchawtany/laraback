@@ -15,16 +15,11 @@ class Createbread_model_classTable extends Migration
             $table->timestamps();
         });
 
-        // add permissions
-        app(config('laraback.models.permission'))->createGroup('bread_model_strings', ['Browse bread_model_strings', 'Read bread_model_strings', 'Edit bread_model_strings', 'Add bread_model_strings', 'Delete bread_model_strings']);
     }
 
     public function down()
     {
         // drop bread_model_variables table
         Schema::dropIfExists('bread_model_variables');
-
-        // delete permissions
-        app(config('laraback.models.permission'))->where('group', 'bread_model_strings')->delete();
     }
 }
