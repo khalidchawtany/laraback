@@ -8,9 +8,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 /* bread_model_use */
 
-use App\Http\Requests\bread_model_class\Storebread_model_class;
-use App\Http\Requests\bread_model_class\Updatebread_model_class;
-use App\Http\Requests\bread_model_class\Removebread_model_class;
+use App\Http\Requests\bread_model_classes\Storebread_model_class;
+use App\Http\Requests\bread_model_classes\Updatebread_model_class;
+use App\Http\Requests\bread_model_classes\Removebread_model_class;
 
 class bread_controller_class extends Controller
 {

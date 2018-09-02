@@ -123,6 +123,11 @@ class BreadCommand extends Command
                 $replace['<!-- bread_datatable_heading -->'][] = $this->replaceAttribute('views/datatable/heading.blade.php', $name, $options);
                 $replace['/* bread_datatable_column */'][] = $this->replaceAttribute('views/datatable/column.blade.php', $name, $options);
             }
+
+            // set field for the datagrid
+            if (isset($options['datagrid_column'])) {
+                $replace['/* bread_datagrid_column */'][] = $this->replaceAttribute('views/components/field.blade.php', $name, $options);
+            }
         }
 
         $replace['/* bread_fillable */'] = implode('", "', array_keys($this->options['attributes']));
