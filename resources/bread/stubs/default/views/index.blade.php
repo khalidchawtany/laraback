@@ -22,7 +22,7 @@
   $(function(){
     $('#bread_model_classDatagrid').edatagrid({
       idField:'id',
-      title: 'bread_model_class',
+      title: 'bread_model_strings',
       toolbar:'#bread_model_classDatagridToolbar',
       fit:true,
       border:false,
