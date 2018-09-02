@@ -4,7 +4,7 @@
 
 use App\Helpers\CustomFormRequest;
 
-class Storebread_model_class extends CustomFormRequest
+class Removebread_model_class extends CustomFormRequest
 {
     public function authorize()
     {
