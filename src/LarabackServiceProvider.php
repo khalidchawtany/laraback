@@ -40,7 +40,7 @@ class LarabackServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
 
         // gate permissions
-        $this->gatePermissions();
+        /* $this->gatePermissions(); */
 
         // blade directives
         $this->bladeDirectives();
