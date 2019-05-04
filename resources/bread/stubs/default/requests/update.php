@@ -20,6 +20,7 @@ class Updatebread_model_class extends CustomFormRequest
     {
         return [
 
+            'id' => 'bail|required',
             /* bread_rule_update */
 
         ];
