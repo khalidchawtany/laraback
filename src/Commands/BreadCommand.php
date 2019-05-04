@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 
 class BreadCommand extends Command
 {
-    protected $signature = 'make:bread {file}'; // php artisan make:bread resources/bread/UsedCar.php
+    protected $signature = 'make:bread {file} {--m|migration} {--f|factory} {--s|seeder} {--a|model} {--w|routes} {--r|request} {--c|controller} {--p|view} {--d|dashboard} {--l|navabar}'; // php artisan make:bread resources/bread/UsedCar.php
     protected $description = 'Generate BREAD files.';
     public $options = [];
     public $replace = [];
@@ -176,44 +176,67 @@ class BreadCommand extends Command
         return $input;
     }
 
+
     public function generate()
     {
-        // create controller file
-        if (!file_exists(base_path($this->options['paths']['controller']))) mkdir(base_path($this->options['paths']['controller']), 0777, true);
-        $this->createFile('controller/controller.php', base_path($this->options['paths']['controller']) . '/' . $this->replace['model']['bread_controller_class'] . '.php');
+        if ($this->option('controller') || $this->confirm('controller ?')) {
+            // create controller file
+            if (!file_exists(base_path($this->options['paths']['controller']))) mkdir(base_path($this->options['paths']['controller']), 0777, true);
+            $this->createFile('controller/controller.php', base_path($this->options['paths']['controller']) . '/' . $this->replace['model']['bread_controller_class'] . '.php');
+        }
 
-        // create model file
-        if (!file_exists(base_path($this->options['paths']['model']))) mkdir(base_path($this->options['paths']['model']), 0777, true);
-        $this->createFile('model.php', base_path($this->options['paths']['model']) . '/' . $this->replace['model']['bread_model_class'] . '.php');
+        if ($this->option('model') || $this->confirm('model ?')) {
+            // create model file
+            if (!file_exists(base_path($this->options['paths']['model']))) mkdir(base_path($this->options['paths']['model']), 0777, true);
+            $this->createFile('model.php', base_path($this->options['paths']['model']) . '/' . $this->replace['model']['bread_model_class'] . '.php');
+        }
 
-        // create factory file
-        if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
-        $this->createFile('factory/factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factory.php');
 
-        // create database seeder file
-        if (!file_exists(base_path($this->options['paths']['seed']))) mkdir(base_path($this->options['paths']['seed']), 0777, true);
-        $this->createFile('database/table_seeder.php', base_path($this->options['paths']['seed']) . '/' . $this->replace['model']['bread_model_classes'] . 'TableSeeder.php');
+        if ($this->option('factory') || $this->confirm('factory ?')) {
+            // create factory file
+            if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
+            $this->createFile('factory/factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factory.php');
+        }
 
-        // update database seeder
-        $this->updateDatabaseSeeder();
+        if ($this->option('seeder') || $this->confirm('seeder ?')) {
+            // create database seeder file
+            if (!file_exists(base_path($this->options['paths']['seed']))) mkdir(base_path($this->options['paths']['seed']), 0777, true);
+            $this->createFile('database/table_seeder.php', base_path($this->options['paths']['seed']) . '/' . $this->replace['model']['bread_model_classes'] . 'TableSeeder.php');
 
-        // create migration file
-        $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variables'] . '_table.php'));
+            // update database seeder
+            $this->updateDatabaseSeeder();
+        }
 
-        // create requests files
-        $this->createRequests();
 
-        // create view files
-        $this->createViews();
+        if ($this->option('migration') || $this->confirm('migration ?')) {
+            // create migration file
+            $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variables'] . '_table.php'));
+        }
 
-        // add menu item to layout navbar
-        $this->updateNavbar();
+        if ($this->option('request') || $this->confirm('request ?')) {
+            // create requests files
+            $this->createRequests();
+        }
 
-        // add dock item to layout dashboard
-        $this->updateDashboard();
+        if ($this->option('view') || $this->confirm('view ?')) {
+            // create view files
+            $this->createViews();
+        }
 
-        // append routes to web
-        $this->updateRoutes();
+        if ($this->option('navbar') || $this->confirm('add to navbar ?')) {
+            // add menu item to layout navbar
+            $this->updateNavbar();
+        }
+
+        if ($this->option('dashboard') || $this->confirm('add to dashboard ?')) {
+            // add dock item to layout dashboard
+            $this->updateDashboard();
+        }
+
+        if ($this->option('routes') || $this->confirm('add routes ?')) {
+            // append routes to web
+            $this->updateRoutes();
+        }
     }
 
     public function createFile($file, $target)
