@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Artisan;
 
 class BreadCommand extends Command
 {
-    protected $signature = 'make:bread {file} {--m|migration} {--f|factory} {--s|seeder} {--a|model} {--w|routes} {--r|request} {--c|controller} {--p|view} {--d|dashboard} {--l|navabar}'; // php artisan make:bread resources/bread/UsedCar.php
+    protected $signature = 'make:bread {file} {--i|home_icon}  {--g|permissions} {--m|migration} {--f|factory} {--s|seeder} {--a|model} {--w|routes} {--r|request} {--c|controller} {--p|view} {--d|dashboard} {--l|navbar}';
+    // php artisan make:bread resources/bread/UsedCar.php
     protected $description = 'Generate BREAD files.';
     public $options = [];
     public $replace = [];
@@ -26,7 +27,7 @@ class BreadCommand extends Command
             $this->setReplaceModel()->setReplaceAttributes()->generate();
 
             // ask to migrate
-            if ($this->ask('Migrate now? [y/n]') == 'y') {
+            if ($this->option('migration') && $this->ask('Migrate now? [y/n]') == 'y') {
                 Artisan::call('migrate');
                 $this->info('Migration complete!');
             }
@@ -176,29 +177,40 @@ class BreadCommand extends Command
         return $input;
     }
 
+    public function hasAnyFlagSet()
+    {
+        foreach ($this->options() as $option) {
+          if($option == true) {
+              return true;
+          }
+        }
+        return false;
+    }
 
     public function generate()
     {
-        if ($this->option('controller') || $this->confirm('controller ?')) {
+        $queryCommand = $this->hasAnyFlagSet();
+
+        if ($this->option('controller') || !$queryCommand && $this->confirm('controller ?')) {
             // create controller file
             if (!file_exists(base_path($this->options['paths']['controller']))) mkdir(base_path($this->options['paths']['controller']), 0777, true);
             $this->createFile('controller/controller.php', base_path($this->options['paths']['controller']) . '/' . $this->replace['model']['bread_controller_class'] . '.php');
         }
 
-        if ($this->option('model') || $this->confirm('model ?')) {
+        if ($this->option('model') || !$queryCommand && $this->confirm('model ?')) {
             // create model file
             if (!file_exists(base_path($this->options['paths']['model']))) mkdir(base_path($this->options['paths']['model']), 0777, true);
             $this->createFile('model.php', base_path($this->options['paths']['model']) . '/' . $this->replace['model']['bread_model_class'] . '.php');
         }
 
 
-        if ($this->option('factory') || $this->confirm('factory ?')) {
+        if ($this->option('factory') || !$queryCommand && $this->confirm('factory ?')) {
             // create factory file
             if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
             $this->createFile('factory/factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factory.php');
         }
 
-        if ($this->option('seeder') || $this->confirm('seeder ?')) {
+        if ($this->option('seeder') || !$queryCommand && $this->confirm('seeder ?')) {
             // create database seeder file
             if (!file_exists(base_path($this->options['paths']['seed']))) mkdir(base_path($this->options['paths']['seed']), 0777, true);
             $this->createFile('database/table_seeder.php', base_path($this->options['paths']['seed']) . '/' . $this->replace['model']['bread_model_classes'] . 'TableSeeder.php');
@@ -208,32 +220,42 @@ class BreadCommand extends Command
         }
 
 
-        if ($this->option('migration') || $this->confirm('migration ?')) {
+        if ($this->option('migration') || !$queryCommand && $this->confirm('migration ?')) {
             // create migration file
             $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variables'] . '_table.php'));
         }
 
-        if ($this->option('request') || $this->confirm('request ?')) {
+        if ($this->option('request') || !$queryCommand && $this->confirm('request ?')) {
             // create requests files
             $this->createRequests();
         }
 
-        if ($this->option('view') || $this->confirm('view ?')) {
+        if ($this->option('view') || !$queryCommand && $this->confirm('view ?')) {
             // create view files
             $this->createViews();
         }
 
-        if ($this->option('navbar') || $this->confirm('add to navbar ?')) {
+        if ($this->option('navbar') || !$queryCommand && $this->confirm('add to navbar ?')) {
             // add menu item to layout navbar
             $this->updateNavbar();
         }
 
-        if ($this->option('dashboard') || $this->confirm('add to dashboard ?')) {
+        if ($this->option('dashboard') || !$queryCommand && $this->confirm('add to dashboard ?')) {
             // add dock item to layout dashboard
             $this->updateDashboard();
         }
 
-        if ($this->option('routes') || $this->confirm('add routes ?')) {
+        if ($this->option('home_icon') || !$queryCommand && $this->confirm('add home icon ?')) {
+            // append home icon
+            $this->updateHomeIcon();
+        }
+
+        if ($this->option('permissions') || !$queryCommand && $this->confirm('add permissions ?')) {
+            // append permissions to the permissions file
+            $this->updatePermissions();
+        }
+
+        if ($this->option('routes') || !$queryCommand && $this->confirm('add routes ?')) {
             // append routes to web
             $this->updateRoutes();
         }
@@ -335,7 +357,7 @@ $hook = '    }
             $target_content = file_get_contents($target);
 
             if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $hook . PHP_EOL . $file_content, $target_content));
+                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
                 $this->line('Updated file: ' . $target);
             }
         }
@@ -358,7 +380,49 @@ $hook = '    }
             $target_content = file_get_contents($target);
 
             if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $hook . PHP_EOL . $file_content, $target_content));
+                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
+                $this->line('Updated file: ' . $target);
+            }
+        }
+    }
+
+    public function updatePermissions()
+    {
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/permissions.blade.php';
+        //If no permissions defined return
+        if(! array_key_exists( 'permissions', $this->options['paths'] )) {
+            return;
+        }
+        $target = base_path($this->options['paths']['permissions']);
+        $hook = '<!-- bread_permissions -->';
+
+        if (file_exists($file) && file_exists($target)) {
+            $file_content = $this->replaceContent($file);
+            $target_content = file_get_contents($target);
+
+            if (strpos($target_content, $file_content) === false) {
+                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
+                $this->line('Updated file: ' . $target);
+            }
+        }
+    }
+
+    public function updateHomeIcon()
+    {
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon.blade.php';
+        //If no permissions defined return
+        if(! array_key_exists( 'home_icon', $this->options['paths'] )) {
+            return;
+        }
+        $target = base_path($this->options['paths']['home_icon']);
+        $hook = '<!-- bread_home_icon -->';
+
+        if (file_exists($file) && file_exists($target)) {
+            $file_content = $this->replaceContent($file);
+            $target_content = file_get_contents($target);
+
+            if (strpos($target_content, $file_content) === false) {
+                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
                 $this->line('Updated file: ' . $target);
             }
         }
