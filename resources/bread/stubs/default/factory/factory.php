@@ -10,9 +10,5 @@ $factory->define(App\bread_model_class::class, function (Faker $faker) {
 
         /* bread_factory */
 
-        'user_id' => function () {
-            return factory(App\User::class)->create()->id;
-        },
-
     ];
 });

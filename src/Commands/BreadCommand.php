@@ -95,6 +95,8 @@ class BreadCommand extends Command
             // replace factory template with the factory/faker.php for each attribute
             if (isset($options['factory'])) {
                 $replace['/* bread_factory */'][] = $this->replaceAttribute('factory/faker.php', $name, $options);
+            } else if (isset($options['foreign'])) {
+                $replace['/* bread_factory */'][] = $this->replaceAttribute('factory/faker_foreign.php', $name, $options);
             }
 
             // set foreing key
@@ -156,6 +158,7 @@ class BreadCommand extends Command
                 $content = str_replace('bread_attribute_' . $key, $value, $content);
             }
 
+            $content = str_replace('bread_attribute_class_from_foreign_key', str_replace(' ', '', ucwords(str_replace('_', ' ', substr($name, 0,-3)))), $content);
             $content = str_replace('bread_attribute_label', ucwords(str_replace('_', ' ', $name)), $content);
             $content = str_replace('bread_attribute_name', $name, $content);
         }
