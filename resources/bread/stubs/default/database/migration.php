@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Createbread_model_classTable extends Migration
+class Createbread_model_classesTable extends Migration
 {
     public function up()
     {
