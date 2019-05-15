@@ -17,7 +17,11 @@ class bread_controller_class extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'user.id']);
+        $this->middleware('permission:view_bread_model_variable', ['only' => ['index', 'list']]);
+        $this->middleware('permission:create_bread_model_variable', ['only' => ['create']]);
+        $this->middleware('permission:update_bread_model_variable', ['only' => ['update']]);
+        $this->middleware('permission:destroy_bread_model_variable', ['only' => ['destroy']]);
     }
 
     public function index()
