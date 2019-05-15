@@ -251,6 +251,8 @@ class BreadCommand extends Command
         if ($this->option('home_icon') || !$queryCommand && $this->confirm('add home icon ?')) {
             // append home icon
             $this->updateHomeIcon();
+            // add home icon css to styles
+            $this->updateHomeIconCss();
         }
 
         if ($this->option('permissions') || !$queryCommand && $this->confirm('add permissions ?')) {
@@ -413,12 +415,33 @@ $hook = '    }
     public function updateHomeIcon()
     {
         $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon.blade.php';
-        //If no permissions defined return
+        //If no home path defined return
         if(! array_key_exists( 'home_icon', $this->options['paths'] )) {
             return;
         }
         $target = base_path($this->options['paths']['home_icon']);
         $hook = '<!-- bread_home_icon -->';
+
+        if (file_exists($file) && file_exists($target)) {
+            $file_content = $this->replaceContent($file);
+            $target_content = file_get_contents($target);
+
+            if (strpos($target_content, $file_content) === false) {
+                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
+                $this->line('Updated file: ' . $target);
+            }
+        }
+    }
+
+    public function updateHomeIconCss()
+    {
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon_css.blade.php';
+        //If no home path defined return
+        if(! array_key_exists( 'home_icon_css', $this->options['paths'] )) {
+            return;
+        }
+        $target = base_path($this->options['paths']['home_icon_css']);
+        $hook = '/* bread_home_icon_css */';
 
         if (file_exists($file) && file_exists($target)) {
             $file_content = $this->replaceContent($file);
