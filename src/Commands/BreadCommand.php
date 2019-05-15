@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 
 class BreadCommand extends Command
 {
-    protected $signature = 'make:bread {file} {--i|home_icon}  {--g|permissions} {--m|migration} {--f|factory} {--s|seeder} {--a|model} {--w|routes} {--r|request} {--c|controller} {--p|view} {--d|dashboard} {--l|navbar}';
+    protected $signature = 'make:bread {file} {--m|migration} {--f|factory} {--s|seeder} {--a|model} {--w|routes} {--r|request} {--c|controller} {--g|permissions} {--p|view} {--i|home_icon} {--d|dashboard} {--l|navbar}';
     // php artisan make:bread resources/bread/UsedCar.php
     protected $description = 'Generate BREAD files.';
     public $options = [];
