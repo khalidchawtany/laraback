@@ -19,9 +19,6 @@ class LarabackServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        // public assets
-        $this->publishes([__DIR__ . '/../public' => public_path('laraback')], 'required');
-        $this->publishes([__DIR__ . '/../public' => public_path('laraback')], 'public');
 
         // bread generator
         if ($this->app->runningInConsole()) {
@@ -30,21 +27,10 @@ class LarabackServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/../resources/bread/Example.php' => resource_path('bread/Example.php')], 'bread_example');
         $this->publishes([__DIR__ . '/../resources/bread/stubs' => resource_path('bread/stubs')], 'bread_stubs');
 
-        // views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laraback');
-        $this->publishes([__DIR__ . '/../resources/views/layouts/app.blade.php' => resource_path('views/vendor/laraback/layouts/app.blade.php')], 'required');
-        $this->publishes([__DIR__ . '/../resources/views/settings/edit.blade.php' => resource_path('views/vendor/laraback/settings/edit.blade.php')], 'required');
-        $this->publishes([__DIR__ . '/../resources/views' => resource_path('views/vendor/laraback')], 'views');
-
-        // routes
-        $this->loadRoutesFrom(__DIR__ . '/routes.php');
-
-        // gate permissions
-        /* $this->gatePermissions(); */
 
         // blade directives
         $this->bladeDirectives();
-        
+
         // settings
         $this->settings();
     }
@@ -80,13 +66,5 @@ class LarabackServiceProvider extends ServiceProvider
             return '<?php endif; ?>';
         });
     }
-    
-    public function settings()
-    {
-        if (Schema::hasTable('settings')) {
-            foreach (app(config('laraback.models.setting'))->get() as $setting) {
-                Config::set('settings.'.$setting->key, $setting->value);
-            }
-        }
-    }
+
 }
