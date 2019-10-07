@@ -31,8 +31,6 @@ class LarabackServiceProvider extends ServiceProvider
         // blade directives
         $this->bladeDirectives();
 
-        // settings
-        $this->settings();
     }
 
     public function register()
