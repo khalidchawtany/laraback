@@ -20,7 +20,10 @@ class BreadCommand extends Command
         .'{--p|view} '
         .'{--i|home_icon} '
         .'{--d|dashboard} '
-        .'{--jm|jmodel} '
+        .'{--j|jmodel} '
+        .'{--jroute} '
+        .'{--jdb} '
+        .'{--jview} '
         .'{--l|navbar}';
     // php artisan make:bread resources/bread/UsedCar.php
     protected $description = 'Generate BREAD files.';
@@ -231,6 +234,10 @@ class BreadCommand extends Command
             // create js model file
             if (!file_exists(base_path($this->options['paths']['js_model']))) mkdir(base_path($this->options['paths']['js_model']), 0777, true);
             $this->createFile('resources/assets/js/models/model.js', base_path($this->options['paths']['js_model']) . '/' . $this->replace['model']['bread_model_class'] . '.js');
+        }
+
+        if ($this->option('jroute') || !$queryCommand && $this->confirm('add route to router js?')) {
+            $this->updateJsRouter();
         }
 
         if ($this->option('factory') || !$queryCommand && $this->confirm('factory ?')) {
@@ -460,6 +467,25 @@ $hook = '    }
         }
     }
 
+    public function updateJsRouter()
+    {
+        //If no home path defined return
+        if(! array_key_exists( 'js_router', $this->options['paths'] )) {
+            return;
+        }
+        $target = base_path($this->options['paths']['js_router']);
+
+        // set import
+        $hook = '/* bread_js_router_import */';
+        $file = base_path($this->options['paths']['stubs']) . '/resources/assets/js/components/router_import.js';
+        $this->updaFileContent($target, $hook, $file);
+
+        // set route
+        $hook = '/* bread_js_router_route */';
+        $file = base_path($this->options['paths']['stubs']) . '/resources/assets/js/components/router_route.js';
+        $this->updaFileContent($target, $hook, $file);
+    }
+
     public function updateHomeIcon()
     {
         $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon.blade.php';
@@ -525,5 +551,18 @@ $hook = '    }
         $content = strtr($content, $this->replace['model']);
 
         return $content;
+    }
+
+    public function updaFileContent($target, $hook, $file)
+    {
+        if (file_exists($file) && file_exists($target)) {
+            $file_content = $this->replaceContent($file);
+            $target_content = file_get_contents($target);
+
+            if (strpos($target_content, $file_content) === false) {
+                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
+                $this->line('Updated file: ' . $target);
+            }
+        }
     }
 }

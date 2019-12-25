@@ -1,1 +1,1 @@
-import bread_model_class from './views/bread_model_classes/'
+import bread_model_classes from './views/bread_model_classes/'
