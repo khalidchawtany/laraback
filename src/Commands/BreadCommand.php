@@ -24,6 +24,7 @@ class BreadCommand extends Command
         .'{--jroute} '
         .'{--jdb} '
         .'{--jview} '
+        .'{--jnavbar} '
         .'{--l|navbar}';
     // php artisan make:bread resources/bread/UsedCar.php
     protected $description = 'Generate BREAD files.';
@@ -238,6 +239,10 @@ class BreadCommand extends Command
 
         if ($this->option('jroute') || !$queryCommand && $this->confirm('add route to router js?')) {
             $this->updateJsRouter();
+        }
+
+        if ($this->option('jnavbar') || !$queryCommand && $this->confirm('add link to navbar js?')) {
+            $this->updateJsNavbar();
         }
 
         if ($this->option('jdb') || !$queryCommand && $this->confirm('add db to database js?')) {
@@ -475,6 +480,17 @@ $hook = '    }
         $this->updateFileContent($target, $hook, $file);
     }
 
+    public function updateJsNavbar()
+    {
+        //If no home path defined return
+        if(! array_key_exists( 'js_navbar', $this->options['paths'] )) {
+            return;
+        }
+        $target = base_path($this->options['paths']['js_navbar']);
+        $hook = '/* bread_js_navbar_link */';
+        $file = base_path($this->options['paths']['stubs']) . '/resources/assets/js/components/navbar.js';
+        $this->updateFileContent($target, $hook, $file);
+    }
     public function updateJsDb()
     {
         //If no home path defined return
