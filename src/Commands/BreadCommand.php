@@ -8,7 +8,20 @@ use Illuminate\Support\Facades\Artisan;
 
 class BreadCommand extends Command
 {
-    protected $signature = 'make:bread {file} {--m|migration} {--f|factory} {--s|seeder} {--a|model} {--w|routes} {--r|request} {--c|controller} {--g|permissions} {--p|view} {--i|home_icon} {--d|dashboard} {--l|navbar}';
+    protected $signature = 'make:bread {file} '
+        .'{--m|migration} '
+        .'{--f|factory} '
+        .'{--s|seeder} '
+        .'{--a|model} '
+        .'{--w|routes} '
+        .'{--r|request} '
+        .'{--c|controller} '
+        .'{--g|permissions} '
+        .'{--p|view} '
+        .'{--i|home_icon} '
+        .'{--d|dashboard} '
+        .'{--jm|jmodel} '
+        .'{--l|navbar}';
     // php artisan make:bread resources/bread/UsedCar.php
     protected $description = 'Generate BREAD files.';
     public $options = [];
@@ -131,6 +144,14 @@ class BreadCommand extends Command
             if (isset($options['datagrid_column'])) {
                 $replace['/* bread_datagrid_column */'][] = $this->replaceAttribute('views/components/field.blade.php', $name, $options);
             }
+
+            // set the router import and set the router route
+            $replace['/* bread_js_router_import */'][] = $this->replaceAttribute('resources/assets/js/components/router_import.js', $name, $options);
+            $replace['/* bread_js_router_route */'][] = $this->replaceAttribute('resources/assets/js/components/router_route.js', $name, $options);
+
+            // set the database import and set the database register
+            $replace['/* bread_js_import_model */'][] = $this->replaceAttribute('resources/assets/js/components/database_import.js', $name, $options);
+            $replace['/* bread_js_register_model */'][] = $this->replaceAttribute('views/datatable/column.blade.php', $name, $options);
         }
 
         $replace['/* bread_fillable */'] = implode('", "', array_keys($this->options['attributes']));
@@ -206,6 +227,11 @@ class BreadCommand extends Command
             $this->createFile('model.php', base_path($this->options['paths']['model']) . '/' . $this->replace['model']['bread_model_class'] . '.php');
         }
 
+        if ($this->option('jmodel') || !$queryCommand && $this->confirm('js model ?')) {
+            // create js model file
+            if (!file_exists(base_path($this->options['paths']['js_model']))) mkdir(base_path($this->options['paths']['js_model']), 0777, true);
+            $this->createFile('resources/assets/js/models/model.js', base_path($this->options['paths']['js_model']) . '/' . $this->replace['model']['bread_model_class'] . '.js');
+        }
 
         if ($this->option('factory') || !$queryCommand && $this->confirm('factory ?')) {
             // create factory file
@@ -331,6 +357,28 @@ $hook = '    }
         if (file_exists($views_folder)) {
             $views = new DirectoryIterator($views_folder);
             $target_folder = base_path($this->options['paths']['views']) . '/' . $this->replace['model']['bread_model_variables'];
+
+            // create target folder if it doesn't exist
+            if (!file_exists($target_folder)) {
+                mkdir($target_folder, 0777, true);
+            }
+
+            // loop through all view stubs and create
+            foreach ($views as $view) {
+                if (!$view->isDot() && !$view->isDir()) {
+                    $this->createFile('views/' . $view->getFilename(), $target_folder . '/' . $view->getFilename());
+                }
+            }
+        }
+    }
+
+    public function createJsViews()
+    {
+        $js_views_folder = base_path($this->options['paths']['stubs']) . '/jsviews';
+
+        if (file_exists($js_views_folder)) {
+            $views = new DirectoryIterator($js_views_folder);
+            $target_folder = base_path($this->options['paths']['jsviews']) . '/' . $this->replace['model']['bread_model_variables'];
 
             // create target folder if it doesn't exist
             if (!file_exists($target_folder)) {
