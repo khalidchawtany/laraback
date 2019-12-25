@@ -244,6 +244,19 @@ class BreadCommand extends Command
             $this->updateJsDb();
         }
 
+        if ($this->option('jview') || !$queryCommand && $this->confirm('add js view?')) {
+            // create js views folder if does not exist
+            if (!file_exists(base_path($this->options['paths']['js_view'] . '/' . $this->replace['model']['bread_model_classes'])))
+                mkdir(base_path($this->options['paths']['js_view'] . '/' . $this->replace['model']['bread_model_classes']), 0777, true);
+
+            // create index file
+            $this->createFile('resources/assets/js/views/index.vue',
+                base_path($this->options['paths']['js_view']) . '/' . $this->replace['model']['bread_model_classes'] . '/index.vue');
+            // create models file
+            $this->createFile('resources/assets/js/views/models.vue',
+                base_path($this->options['paths']['js_view']) . '/' . $this->replace['model']['bread_model_classes'] . '/' . $this->replace['model']['bread_model_variables'] . '.vue');
+        }
+
         if ($this->option('factory') || !$queryCommand && $this->confirm('factory ?')) {
             // create factory file
             if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
