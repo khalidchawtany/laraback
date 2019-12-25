@@ -240,6 +240,10 @@ class BreadCommand extends Command
             $this->updateJsRouter();
         }
 
+        if ($this->option('jdb') || !$queryCommand && $this->confirm('add db to database js?')) {
+            $this->updateJsDb();
+        }
+
         if ($this->option('factory') || !$queryCommand && $this->confirm('factory ?')) {
             // create factory file
             if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
@@ -284,8 +288,6 @@ class BreadCommand extends Command
         if ($this->option('home_icon') || !$queryCommand && $this->confirm('add home icon ?')) {
             // append home icon
             $this->updateHomeIcon();
-            // add home icon css to styles
-            $this->updateHomeIconCss();
         }
 
         if ($this->option('permissions') || !$queryCommand && $this->confirm('add permissions ?')) {
@@ -403,68 +405,42 @@ $hook = '    }
 
     public function updateDashboard()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/dashboard.blade.php';
         //If no navbar defined return
         if(! array_key_exists ( 'dashboard', $this->options['paths'] ) )
         {
             return;
         }
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/dashboard.blade.php';
         $target = base_path($this->options['paths']['dashboard']);
         $hook = '<!-- bread_dashboard -->';
-
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
+        $this->updateFileContent($target, $hook, $file);
     }
 
 
     public function updateNavbar()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/navbar.blade.php';
         //If no navbar defined return
         if(! array_key_exists ( 'navbar', $this->options['paths'] ) )
         {
             return;
         }
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/navbar.blade.php';
         $target = base_path($this->options['paths']['navbar']);
         $hook = '<!-- bread_navbar -->';
 
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
+        $this->updateFileContent($target, $hook, $file);
     }
 
     public function updatePermissions()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/permissions.blade.php';
         //If no permissions defined return
         if(! array_key_exists( 'permissions', $this->options['paths'] )) {
             return;
         }
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/permissions.blade.php';
         $target = base_path($this->options['paths']['permissions']);
         $hook = '<!-- bread_permissions -->';
-
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
+        $this->updateFileContent($target, $hook, $file);
     }
 
     public function updateJsRouter()
@@ -478,54 +454,51 @@ $hook = '    }
         // set import
         $hook = '/* bread_js_router_import */';
         $file = base_path($this->options['paths']['stubs']) . '/resources/assets/js/components/router_import.js';
-        $this->updaFileContent($target, $hook, $file);
+        $this->updateFileContent($target, $hook, $file);
 
         // set route
         $hook = '/* bread_js_router_route */';
         $file = base_path($this->options['paths']['stubs']) . '/resources/assets/js/components/router_route.js';
-        $this->updaFileContent($target, $hook, $file);
+        $this->updateFileContent($target, $hook, $file);
     }
 
+    public function updateJsDb()
+    {
+        //If no home path defined return
+        if(! array_key_exists( 'js_db', $this->options['paths'] )) {
+            return;
+        }
+        $target = base_path($this->options['paths']['js_db']);
+
+        // import model in to databases.js
+        $hook = '/* bread_js_import_model */';
+        $file = base_path($this->options['paths']['stubs']) . '/resources/assets/js/components/database_import.js';
+        $this->updateFileContent($target, $hook, $file);
+
+        // register database
+        $hook = '/* bread_js_register_model */';
+        $file = base_path($this->options['paths']['stubs']) . '/resources/assets/js/components/database_register.js';
+        $this->updateFileContent($target, $hook, $file);
+    }
     public function updateHomeIcon()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon.blade.php';
         //If no home path defined return
         if(! array_key_exists( 'home_icon', $this->options['paths'] )) {
             return;
         }
         $target = base_path($this->options['paths']['home_icon']);
         $hook = '<!-- bread_home_icon -->';
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon.blade.php';
+        $this->updateFileContent($target, $hook, $file);
 
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
-    }
-
-    public function updateHomeIconCss()
-    {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon_css.blade.php';
         //If no home path defined return
         if(! array_key_exists( 'home_icon_css', $this->options['paths'] )) {
             return;
         }
         $target = base_path($this->options['paths']['home_icon_css']);
         $hook = '/* bread_home_icon_css */';
-
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon_css.blade.php';
+        $this->updateFileContent($target, $hook, $file);
     }
 
     public function updateRoutes()
@@ -544,16 +517,7 @@ $hook = '    }
         }
     }
 
-    public function replaceContent($file)
-    {
-        $content = file_get_contents($file);
-        $content = strtr($content, $this->replace['attributes']);
-        $content = strtr($content, $this->replace['model']);
-
-        return $content;
-    }
-
-    public function updaFileContent($target, $hook, $file)
+    public function updateFileContent($target, $hook, $file)
     {
         if (file_exists($file) && file_exists($target)) {
             $file_content = $this->replaceContent($file);
@@ -564,5 +528,14 @@ $hook = '    }
                 $this->line('Updated file: ' . $target);
             }
         }
+    }
+
+    public function replaceContent($file)
+    {
+        $content = file_get_contents($file);
+        $content = strtr($content, $this->replace['attributes']);
+        $content = strtr($content, $this->replace['model']);
+
+        return $content;
     }
 }
