@@ -157,6 +157,7 @@ class BreadCommand extends Command
             // set the database import and set the database register
             $replace['/* bread_js_import_model */'][] = $this->replaceAttribute('resources/assets/js/components/database_import.js', $name, $options);
             $replace['/* bread_js_register_model */'][] = $this->replaceAttribute('views/datatable/column.blade.php', $name, $options);
+
         }
 
         $replace['/* bread_fillable */'] = implode('", "', array_keys($this->options['attributes']));
