@@ -13,65 +13,33 @@ export default class bread_model_class extends Model {
             user: this.belongsTo(User, 'user_id'),
         }
     }
+    static apiConfig = {
+        baseURL: '/bread_model_variables',
 
-    static onResponse = {
-        create: (data) => {
-            return data.obj;
-        },
-        delete: (data) => {
-            return data.obj;
-        },
-        fetch: (data) => {
-            return data;
-        },
-        get: (data) => {
-            return data;
-        },
-        update: (data) => {
-            return data.obj;
-        },
-    };
+        actions: {
+            fetchById (id) {
+                return this.get(`/get/${id}`);
+            },
 
-    static methodConf = {
-        http: {
-            url: '/bread_model_variables'
-        },
-        methods: {
-            $fetch: {
-                name: 'fetch',
-                http: {
-                    url: '/paginate',
-                    method: 'get',
-                },
+            destroy(id) {
+                return this.delete(`/${id}`, { delete: id, });
             },
-            $get: {
-                name: 'get',
-                http: {
-                    url: '/get/:id',
-                    method: 'get',
-                },
+
+            update(id, data) {
+                return this.put(`/${id}`, { ...data }, {dataKey: 'obj'});
             },
-            $create: {
-                name: 'create',
-                http: {
-                    url: '',
-                    method: 'post',
-                },
+
+            fetch: {
+                method: 'get',
+                url: '/paginate',
             },
-            $update: {
-                name: 'update',
-                http: {
-                    url: '/:id',
-                    method: 'put',
-                },
+
+            post: {
+                method: 'post',
+                url: '',
             },
-            $delete: {
-                name: 'delete',
-                http: {
-                    url: '/:id',
-                    method: 'delete',
-                },
-            },
-        },
+
+        }
     }
+
 }
