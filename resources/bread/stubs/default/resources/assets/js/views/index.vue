@@ -1,6 +1,6 @@
 <template>
     <v-content>
-        <bread_model_class v-if="page == 'bread_model_variable'" />
+        <bread_model_class v-if="page == 'bread_model_variables'" />
     </v-content>
 </template>
 <script>
