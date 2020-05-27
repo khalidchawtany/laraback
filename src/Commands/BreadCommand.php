@@ -66,20 +66,27 @@ class BreadCommand extends Command
         $string = trim(preg_replace('/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]/', ' $0', $model));
 
         $this->replace['model'] = [
-            'bread_model_class' => $model,
-            'bread_model_variables' => str_replace(' ', '_', strtolower(str_plural($string))),
-            'bread_model_variable' => str_replace(' ', '_', strtolower($string)),
-            'bread_model_strings' => str_plural($string),
-            'bread_model_classes' => str_plural($model),
-            'bread_model_string' => $string,
-            '/* bread_model_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['model']) . ';',
-            '/* bread_model_use */' => 'use '. $this->replaceNamespace($this->options['paths']['model']) . '\\' . $model . ';',
-            'bread_controller_class' => $controller,
-            'bread_controller_view' => $this->replaceView($this->options['paths']['views']),
-            'bread_controller_routes' => ltrim(str_replace('App\\Http\\Controllers', '', $this->replaceNamespace($this->options['paths']['controller'])) . '\\' . $controller, '\\'),
+            'bread_model_class'                => $model,
+            'bread_model_variables'            => str_replace(' ', '_', strtolower(str_plural($string))),
+            'bread_model_variable'             => str_replace(' ', '_', strtolower($string)),
+            'bread_model_strings'              => str_plural($string),
+            'bread_model_classes'              => str_plural($model),
+            'bread_model_string'               => $string,
+            'bread_controller_class'           => $controller,
+            'bread_controller_view'            => $this->replaceView($this->options['paths']['views']),
+            'bread_controller_routes'          => ltrim(str_replace('App\\Http\\Controllers', '', $this->replaceNamespace($this->options['paths']['controller'])) . '\\' . $controller, '\\'),
+            '/* bread_model_namespace */'      => 'namespace ' . $this->replaceNamespace($this->options['paths']['model']) . ';',
+            '/* bread_model_use */'            => 'use '. $this->replaceNamespace($this->options['paths']['model']) . '\\' . $model . ';',
             '/* bread_controller_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['controller']) . ';',
-            '/* bread_request_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['request']) . '\\' . str_replace(' ', '',str_plural($string)) . ';',
+            '/* bread_request_namespace */'    => 'namespace ' . $this->replaceNamespace($this->options['paths']['request']) . '\\' . str_replace(' ', '',str_plural($string)) . ';',
+            '/* bread_js_view_dir */'         => '',
         ];
+
+        if (isset($this->options['config']) && isset($this->options['config']['namespace'])) {
+            /* dd($this->replace); */
+            /* $this->replace['/1* bread_controller_namespace *1/'] = 'namespace ' . $this->replaceNamespace($this->options['paths']['controller']) . ';'; */
+        }
+
 
         return $this;
     }
@@ -234,19 +241,19 @@ class BreadCommand extends Command
 
         if ($this->option('controller') || !$queryCommand && $this->confirm('controller ?')) {
             // create controller file
-            if (!file_exists(base_path($this->options['paths']['controller']))) mkdir(base_path($this->options['paths']['controller']), 0777, true);
+            $this->createDir('controller');
             $this->createFile('controller/controller.php', base_path($this->options['paths']['controller']) . '/' . $this->replace['model']['bread_controller_class'] . '.php');
         }
 
         if ($this->option('model') || !$queryCommand && $this->confirm('model ?')) {
             // create model file
-            if (!file_exists(base_path($this->options['paths']['model']))) mkdir(base_path($this->options['paths']['model']), 0777, true);
+            $this->createDir('model');
             $this->createFile('model.php', base_path($this->options['paths']['model']) . '/' . $this->replace['model']['bread_model_class'] . '.php');
         }
 
         if ($this->option('jmodel') || !$queryCommand && $this->confirm('js model ?')) {
             // create js model file
-            if (!file_exists(base_path($this->options['paths']['js_model']))) mkdir(base_path($this->options['paths']['js_model']), 0777, true);
+            $this->createDir('js_model');
             $this->createFile('resources/assets/js/models/model.js', base_path($this->options['paths']['js_model']) . '/' . $this->replace['model']['bread_model_class'] . '.js');
         }
 
@@ -268,8 +275,7 @@ class BreadCommand extends Command
 
         if ($this->option('jview') || !$queryCommand && $this->confirm('add js view?')) {
             // create js views folder if does not exist
-            if (!file_exists(base_path($this->options['paths']['js_view'] . '/' . $this->replace['model']['bread_model_classes'])))
-                mkdir(base_path($this->options['paths']['js_view'] . '/' . $this->replace['model']['bread_model_classes']), 0777, true);
+            $this->createDir(null, $this->options['paths']['js_view'] . '/' . $this->replace['model']['bread_model_classes']);
 
             // create index file
             $this->createFile('resources/assets/js/views/index.vue',
@@ -281,13 +287,13 @@ class BreadCommand extends Command
 
         if ($this->option('factory') || !$queryCommand && $this->confirm('factory ?')) {
             // create factory file
-            if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
+            $this->createDir('factory');
             $this->createFile('factory/factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factory.php');
         }
 
         if ($this->option('seeder') || !$queryCommand && $this->confirm('seeder ?')) {
             // create database seeder file
-            if (!file_exists(base_path($this->options['paths']['seed']))) mkdir(base_path($this->options['paths']['seed']), 0777, true);
+            $this->createDir('seed');
             $this->createFile('database/table_seeder.php', base_path($this->options['paths']['seed']) . '/' . $this->replace['model']['bread_model_classes'] . 'TableSeeder.php');
 
             // update database seeder
@@ -380,9 +386,7 @@ $hook = '    }
             $target_folder = base_path($this->options['paths']['request']) . '/' . $this->replace['model']['bread_model_classes'];
 
             // create target folder if it doesn't exist
-            if (!file_exists($target_folder)) {
-                mkdir($target_folder, 0777, true);
-            }
+            $this->createDir(null, $target_folder);
 
             // loop through all request stubs and create
             foreach ($requests as $request) {
@@ -403,9 +407,7 @@ $hook = '    }
             $target_folder = base_path($this->options['paths']['views']) . '/' . $this->replace['model']['bread_model_variables'];
 
             // create target folder if it doesn't exist
-            if (!file_exists($target_folder)) {
-                mkdir($target_folder, 0777, true);
-            }
+            $this->createDir(null, $target_folder);
 
             // loop through all view stubs and create
             foreach ($views as $view) {
@@ -425,9 +427,8 @@ $hook = '    }
             $target_folder = base_path($this->options['paths']['jsviews']) . '/' . $this->replace['model']['bread_model_variables'];
 
             // create target folder if it doesn't exist
-            if (!file_exists($target_folder)) {
-                mkdir($target_folder, 0777, true);
-            }
+            $this->createDir(null, $target_folder);
+
 
             // loop through all view stubs and create
             foreach ($views as $view) {
@@ -598,4 +599,16 @@ $hook = '    }
 
         return $content;
     }
+
+    public function createDir($key, $path = null)
+    {
+        if ($key != null) {
+            $path = $this->options['paths'][$key];
+        }
+        if (!file_exists($path)) {
+            dump("created_dir(" . $path .")");
+            mkdir($path, 0777, true);
+        }
+    }
+
 }
