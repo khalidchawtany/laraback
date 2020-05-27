@@ -162,6 +162,17 @@ class BreadCommand extends Command
 
         $replace['/* bread_fillable */'] = implode('", "', array_keys($this->options['attributes']));
 
+
+        // Replace the js_model_fields with the specified tyep
+        $bread_js_model_fields = [];
+        foreach ($this->options['attributes'] as $key => $values) {
+            if (isset($values['js_type'])) {
+                $bread_js_model_fields[] = "$key: " . $values['js_type'];
+            }
+        }
+
+        $replace['/* bread_js_model_fields */'] = implode(','.PHP_EOL, $bread_js_model_fields);
+
         foreach ($replace as $key => $values) {
             $this->replace['attributes'][$key] = trim(is_array($values) ? implode(PHP_EOL, $values) : $values);
         }
