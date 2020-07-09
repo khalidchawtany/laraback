@@ -5,6 +5,7 @@ namespace Kjdion84\Laraback\Commands;
 use DirectoryIterator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class BreadCommand extends Command
 {
@@ -67,10 +68,10 @@ class BreadCommand extends Command
 
         $this->replace['model'] = [
             'bread_model_class'                => $model,
-            'bread_model_variables'            => str_replace(' ', '_', strtolower(str_plural($string))),
+            'bread_model_variables'            => str_replace(' ', '_', strtolower(Str::plural($string))),
             'bread_model_variable'             => str_replace(' ', '_', strtolower($string)),
-            'bread_model_strings'              => str_plural($string),
-            'bread_model_classes'              => str_plural($model),
+            'bread_model_strings'              => Str::plural($string),
+            'bread_model_classes'              => Str::plural($model),
             'bread_model_string'               => $string,
             'bread_controller_class'           => $controller,
             'bread_controller_view'            => $this->replaceView($this->options['paths']['views']),
@@ -78,7 +79,7 @@ class BreadCommand extends Command
             '/* bread_model_namespace */'      => 'namespace ' . $this->replaceNamespace($this->options['paths']['model']) . ';',
             '/* bread_model_use */'            => 'use '. $this->replaceNamespace($this->options['paths']['model']) . '\\' . $model . ';',
             '/* bread_controller_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['controller']) . ';',
-            '/* bread_request_namespace */'    => 'namespace ' . $this->replaceNamespace($this->options['paths']['request']) . '\\' . str_replace(' ', '',str_plural($string)) . ';',
+            '/* bread_request_namespace */'    => 'namespace ' . $this->replaceNamespace($this->options['paths']['request']) . '\\' . str_replace(' ', '',Str::plural($string)) . ';',
             '/* bread_js_view_dir */'         => '',
         ];
 
