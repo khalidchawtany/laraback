@@ -39,6 +39,13 @@
       destroyUrl: 'bread_model_variables/destroy',
 
         columns: [[
+
+			{
+				field: 'id',
+				title: 'Id',
+				width: 50,
+			},
+
           /* bread_datagrid_column */
 
           {field:'action',title:'Action',width:100,align:'center',

@@ -409,7 +409,9 @@ $hook = '    }
                 file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
                 $this->line('Updated file: ' . $target);
             }
-        }
+		} else {
+			$this->error('Error: permission files does not exist.');
+		}
     }
 
     public function updateHomeIcon()
