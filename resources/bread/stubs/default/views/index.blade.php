@@ -50,15 +50,15 @@
 
           {field:'action',title:'Action',width:100,align:'center',
               formatter:function(value,row,index){
+				  var s = "";
                   if (row.editing){
-                      var s = '<button onclick="saveRow(\'bread_model_classDatagrid\', ' + index +')">Save</button> ';
-                      var c = '<button onclick="cancelRow(\'bread_model_classDatagrid\', ' + index +')">Cancel</button>';
-                      return s+c;
+                      s += '<button onclick="saveRow(\'bread_model_classDatagrid\', ' + index +')">Save</button> ';
+                      s += '<button onclick="cancelRow(\'bread_model_classDatagrid\', ' + index +')">Cancel</button>';
                   } else {
-                      var e = '<button onclick="editRow(\'bread_model_classDatagrid\', ' + index + ')">Edit</button> ';
-                      var d = '<button onclick="deleteRow(\'bread_model_classDatagrid\', ' + index + ')">Delete</button> ';
-                      return e+d;
+                      s += '<button onclick="editRow(\'bread_model_classDatagrid\', ' + index + ')">Edit</button> ';
+                      s += '<button onclick="deleteRow(\'bread_model_classDatagrid\', ' + index + ')">Delete</button> ';
                   }
+                  return s;
               }
           }
 
@@ -78,7 +78,6 @@
         },
 
         onDestroy: function() {
-          resetPermissionCheckboxes();
         }
 
     });

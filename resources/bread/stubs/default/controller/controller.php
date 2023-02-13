@@ -32,7 +32,7 @@ class bread_controller_class extends Controller
     public function list(Request $request)
     {
         return QueryBuilder::for(bread_model_class::class)
-        ->allowedFilters("/* bread_fillable */")
+        ->allowedFilters(["/* bread_fillable */"])
         ->jsonPaginate();
     }
 
@@ -40,7 +40,7 @@ class bread_controller_class extends Controller
     {
         $bread_model_variable = bread_model_class::create($request->input());
 
-        return ezReturnSuccessMessage('bread_model_string created successfully!', $bread_model_variable->id);
+        return ezReturnSuccessMessage('bread_model_string created successfully!', $bread_model_variable);
     }
 
     public function update(Updatebread_model_class $request)
@@ -49,7 +49,7 @@ class bread_controller_class extends Controller
 
         $bread_model_variable->update($request->input());
 
-        return ezReturnSuccessMessage('bread_model_string updated successfully!');
+        return ezReturnSuccessMessage('bread_model_string updated successfully!', $bread_model_variable);
     }
 
     public function destroy(Request $request)

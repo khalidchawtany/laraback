@@ -129,7 +129,7 @@ class BreadCommand extends Command
 
             // set field for the datagrid
             if (isset($options['datagrid_column'])) {
-                $replace['/* bread_datagrid_column */'][] = $this->replaceAttribute('views/components/field.blade.php', $name, $options);
+                $replace['/* bread_datagrid_column */'][] = $this->replaceAttribute("views/components/fields/{$options['datagrid_column']}.blade.php", $name, $options);
             }
         }
 
@@ -155,6 +155,11 @@ class BreadCommand extends Command
             }
 
             foreach ($options as $key => $value) {
+				if (is_array($value)) {
+					foreach ($value as $vKey => $vValue) {
+						$content = str_replace('bread_attribute_' . $vKey, $vValue, $content);
+					}
+				}
                 $content = str_replace('bread_attribute_' . $key, $value, $content);
             }
 
