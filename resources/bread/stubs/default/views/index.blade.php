@@ -2,7 +2,7 @@
     <table id="bread_model_classDatagrid"></table>
 
     <div id="bread_model_classDatagridToolbar" style="padding:5px;text-align:center;">
-		<!-- bread_model_dialog_show_button -->
+        <!-- bread_model_dialog_show_button -->
         <a href="#" class="easyui-linkbutton" iconCls="icon-add"  onclick="javascript:$('#bread_model_classDatagrid').edatagrid('addRow')">New</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload"  onclick="javascript:$('#bread_model_classDatagrid').edatagrid('reload')">Reload</a>
     </div>
@@ -44,17 +44,17 @@
 
         columns: [[
 
-			{
-				field: 'id',
-				title: 'Id',
-				width: 50,
-			},
+            {
+                field: 'id',
+                title: 'Id',
+                width: 50,
+            },
 
           /* bread_datagrid_column */
 
           {field:'action',title:'Action',width:100,align:'center',
               formatter:function(value,row,index){
-				  var s = "";
+                  var s = "";
                   if (row.editing){
                       s += '<button onclick="saveRow(\'bread_model_classDatagrid\', ' + index +')">Save</button> ';
                       s += '<button onclick="cancelRow(\'bread_model_classDatagrid\', ' + index +')">Cancel</button>';
@@ -82,7 +82,9 @@
         },
 
         onDestroy: function() {
-        }
+        },
+
+        /* bread_model_dialog_on_dblclick_datagrid*/
 
     });
   });
@@ -94,7 +96,7 @@
       }
   ]);
 
-<!-- bread_model_dialog_show_js_function -->
+  <!-- bread_model_dialog_show_js_function -->
 
 
 </script>

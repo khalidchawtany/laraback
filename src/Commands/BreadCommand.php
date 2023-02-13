@@ -139,6 +139,7 @@ class BreadCommand extends Command
 			$replace['<!-- bread_model_dialog_show_button -->'][]      = $this->replaceAttribute("views/components/dialog/model_dialog_show_button.blade.php", $name, $options);
 			$replace['<!-- model_dialog_placeholder -->'][]            = $this->replaceAttribute("views/components/dialog/model_dialog_placeholder.blade.php.blade.php", $name, $options);
 			$replace['<!-- bread_model_dialog_show_js_function -->'][] = $this->replaceAttribute("views/components/dialog/model_dialog_show_js_function.blade.php", $name, $options);
+			$replace['/* bread_model_dialog_on_dblclick_datagrid*/'][] = $this->replaceAttribute("views/components/dialog/model_dialog_on_dblclick_datagrid.blade.php", $name, $options);
 			$replace['/* bread_dialog_fields */']                      = "\t\t'" . implode("' => null,\n\t\t  '", array_keys($this->options['attributes'])) . "'=> null',";
 		}
 
