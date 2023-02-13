@@ -2,11 +2,15 @@
     <table id="bread_model_classDatagrid"></table>
 
     <div id="bread_model_classDatagridToolbar" style="padding:5px;text-align:center;">
+		<!-- bread_model_dialog_show_button -->
         <a href="#" class="easyui-linkbutton" iconCls="icon-add"  onclick="javascript:$('#bread_model_classDatagrid').edatagrid('addRow')">New</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload"  onclick="javascript:$('#bread_model_classDatagrid').edatagrid('reload')">Reload</a>
     </div>
 
 </div>
+
+
+<!-- model_dialog_placeholder -->
 
 <style media="screen">
 
@@ -89,6 +93,8 @@
           type: 'label'
       }
   ]);
+
+<!-- bread_model_dialog_show_js_function -->
 
 
 </script>

@@ -131,7 +131,16 @@ class BreadCommand extends Command
             if (isset($options['datagrid_column'])) {
                 $replace['/* bread_datagrid_column */'][] = $this->replaceAttribute("views/components/fields/{$options['datagrid_column']}.blade.php", $name, $options);
             }
+
         }
+
+		// set buttons and dialogs for the dialog of the model
+		if (isset($this->options['options']['model_dialog'])) {
+			$replace['<!-- bread_model_dialog_show_button -->'][]      = $this->replaceAttribute("views/components/dialog/model_dialog_show_button.blade.php", $name, $options);
+			$replace['<!-- model_dialog_placeholder -->'][]            = $this->replaceAttribute("views/components/dialog/model_dialog_placeholder.blade.php.blade.php", $name, $options);
+			$replace['<!-- bread_model_dialog_show_js_function -->'][] = $this->replaceAttribute("views/components/dialog/model_dialog_show_js_function.blade.php", $name, $options);
+			$replace['/* bread_dialog_fields */']                      = "\t\t'" . implode("' => null,\n\t\t  '", array_keys($this->options['attributes'])) . "'=> null',";
+		}
 
         $replace['/* bread_fillable */'] = implode('", "', array_keys($this->options['attributes']));
 
@@ -342,10 +351,22 @@ $hook = '    }
                 mkdir($target_folder, 0777, true);
             }
 
+			$dialogFileNamePrefix = "";
             // loop through all view stubs and create
             foreach ($views as $view) {
                 if (!$view->isDot() && !$view->isDir()) {
-                    $this->createFile('views/' . $view->getFilename(), $target_folder . '/' . $view->getFilename());
+					if ($view->getFilename() == 'Dialog.blade.php') {
+						// for dialog view, check if dialog is enabled
+						if( !isset($this->options['options']['model_dialog'])) {
+							$this->line('Skipping dialog view');
+							continue;
+						}
+
+						// set dialog file name prefix
+						$dialogFileNamePrefix = $this->replace['model']['bread_model_variable'];
+					}
+
+                    $this->createFile('views/' . $view->getFilename(), $target_folder . '/'. $dialogFileNamePrefix . $view->getFilename());
                 }
             }
         }
