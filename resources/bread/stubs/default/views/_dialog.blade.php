@@ -2,7 +2,7 @@
 
   $url = isset($bread_model_variable) ? 'bread_model_variables/update' : 'bread_model_variables/create';
 
-  $model = 'model_class_variable';
+  $model = 'bread_model_class';
   $title = isset($bread_model_variable) ? 'Update bread_model_class' : 'New bread_model_class';
   $dialogWidth = 1000;
   $dialogHeight = 700;
@@ -217,10 +217,10 @@
   <div class="panel-buttons" data-options="region:'south', height:'auto'">
 
     <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
-      onclick="savemodel_class_variable()">Save</a>
+      onclick="savebread_model_class()">Save</a>
 
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-      onclick="$('#model_class_variableDialog').dialog('close');$('#model_class_variableDatagrid').edatagrid('reload');"
+      onclick="$('#bread_model_classDialog').dialog('close');$('#bread_model_classDatagrid').edatagrid('reload');"
       style="width:90px">Cancel</a>
 
   </div>
@@ -229,7 +229,7 @@
 
 <script type="text/javascript">
   $(function() {
-    $('#model_class_variableDialog')
+    $('#bread_model_classDialog')
       .dialog({
         width: <?= $dialogWidth ?>,
         height: <?= $dialogHeight ?>
@@ -246,7 +246,7 @@
     });
   });
 
-  function savemodel_class_variable() {
+  function savebread_model_class() {
 
     $('#{{ $model }}Form').form('submit', {
 
@@ -272,8 +272,8 @@
             msg: result.msg
           });
         } else {
-          $('#model_class_variableDialog').dialog('close');
-          $('#model_class_variableDatagrid').edatagrid('reload');
+          $('#bread_model_classDialog').dialog('close');
+          $('#bread_model_classDatagrid').edatagrid('reload');
           $.messager.show({
             title: 'Success',
             msg: 'Operation performed successfully!'
