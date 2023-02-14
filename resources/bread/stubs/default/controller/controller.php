@@ -29,6 +29,17 @@ class bread_controller_class extends Controller
         return view('bread_controller_viewbread_model_variables.index');
     }
 
+    public function showbread_model_classDialog(Request $request)
+    {
+        if ($request->has('id')) {
+            $bread_model_variable = bread_model_class::findOrFail($request->id);
+
+            return view('bread_model_variables.bread_model_variable_dialog', compact('bread_model_variable'));
+        }
+
+        return view('bread_model_variables.bread_model_variable_dialog');
+    }
+
     public function list(Request $request)
     {
         return QueryBuilder::for(bread_model_class::class)
