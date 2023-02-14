@@ -63,7 +63,7 @@ class bread_controller_class extends Controller
         return ezReturnSuccessMessage('bread_model_string updated successfully!', $bread_model_variable);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Removebread_model_class $request)
     {
 
     	$bread_model_variable = bread_model_class::findOrFail($request->id);
