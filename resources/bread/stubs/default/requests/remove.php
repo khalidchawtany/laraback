@@ -2,11 +2,14 @@
 
 /* bread_request_namespace */
 
-use App\Helpers\CustomFormRequest;
+use App\Http\Requests\CustomFormRequest;
 
 class Removebread_model_class extends CustomFormRequest
 {
-    public function authorize()
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
     {
         return true;
     }
@@ -14,9 +17,9 @@ class Removebread_model_class extends CustomFormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
 
@@ -25,6 +28,3 @@ class Removebread_model_class extends CustomFormRequest
         ];
     }
 }
-
-
-

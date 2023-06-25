@@ -1,14 +1,23 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\bread_model_class::class, function (Faker $faker) {
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-    /* $users = App\User::all()->take(5)->pluck('id'); */
-
-    return [
-
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\bread_model_class>
+ */
+class bread_model_classFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
         /* bread_factory */
-
-    ];
-});
+        ];
+    }
+}

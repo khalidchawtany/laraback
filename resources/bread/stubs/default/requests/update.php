@@ -2,11 +2,11 @@
 
 /* bread_request_namespace */
 
-use App\Helpers\CustomFormRequest;
+use App\Http\Requests\CustomFormRequest;
 
 class Updatebread_model_class extends CustomFormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -14,9 +14,9 @@ class Updatebread_model_class extends CustomFormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
 

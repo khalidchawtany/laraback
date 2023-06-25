@@ -2,21 +2,17 @@
 
 /* bread_model_namespace */
 
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
+use App\Models\User;
+use App\Models\BaseModel;
 
-class bread_model_class extends Model
+class bread_model_class extends BaseModel
 {
-    use LogsActivity;
-
-    protected static $logOnlyDirty = true;
-    protected static $submitEmptyLogs = false;
 
     protected $fillable = ["/* bread_fillable */"];
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
 }

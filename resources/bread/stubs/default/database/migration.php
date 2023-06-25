@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class Createbread_model_classesTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up():void
     {
         // create bread_model_variables table
         Schema::create('bread_model_variables', function (Blueprint $table) {
@@ -18,9 +18,9 @@ class Createbread_model_classesTable extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
         // drop bread_model_variables table
         Schema::dropIfExists('bread_model_variables');
     }
-}
+};

@@ -4,8 +4,7 @@
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\QueryBuilder;
-
+use App\Adapters\JQueryBuilder;
 /* bread_model_use */
 
 use App\Http\Requests\bread_model_classes\Storebread_model_class;
@@ -42,9 +41,9 @@ class bread_controller_class extends Controller
 
     public function list(Request $request)
     {
-        return QueryBuilder::for(bread_model_class::class)
+        return JQueryBuilder::for(bread_model_class::class)
         ->allowedFilters(["/* bread_fillable */"])
-        ->jsonPaginate();
+        ->jsonJPaginate();
     }
 
     protected function create(Storebread_model_class $request)

@@ -1,8 +1,8 @@
 <?php
 
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use \Spatie\Permission\Models\Role;
+// use Illuminate\Support\Facades\Hash;
 
 class bread_model_classesTableSeeder extends Seeder
 {
@@ -11,8 +11,8 @@ class bread_model_classesTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        factory(App\bread_model_class::class, 20)->create();
+        App\Models\bread_model_class::factory(20)->create();
     }
 }
