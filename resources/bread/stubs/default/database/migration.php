@@ -10,7 +10,7 @@ return new class extends Migration
     {
         // create bread_model_variables table
         Schema::create('bread_model_variables', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             /* bread_schema */
             $table->timestamps();
 
