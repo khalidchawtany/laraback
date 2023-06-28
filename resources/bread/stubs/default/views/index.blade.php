@@ -2,9 +2,14 @@
     <table id="bread_model_classDatagrid"></table>
 
     <div id="bread_model_classDatagridToolbar" style="padding:5px;text-align:center;">
+        @can('create_bread_model_variable')
         <!-- bread_model_dialog_show_button -->
         <a href="#" class="easyui-linkbutton" iconCls="icon-add"  onclick="javascript:$('#bread_model_classDatagrid').edatagrid('addRow')">New</a>
+        @endcan
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload"  onclick="javascript:$('#bread_model_classDatagrid').edatagrid('reload')">Reload</a>
+        @can('destroy_bread_model_variable')
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove"  onclick="removebread_model_class()">Remove</a>
+        @endcan
     </div>
 
 </div>
@@ -68,22 +73,6 @@
 
         ]],
 
-        onBeforeEdit:function(index,row){
-            row.editing = true;
-            $(this).edatagrid('refreshRow', index);
-        },
-        onAfterEdit:function(index,row){
-            row.editing = false;
-            $(this).edatagrid('refreshRow', index);
-        },
-        onCancelEdit:function(index,row){
-            row.editing = false;
-            $(this).edatagrid('refreshRow', index);
-        },
-
-        onDestroy: function() {
-        },
-
         /* bread_model_dialog_on_dblclick_datagrid*/
 
     });
@@ -97,6 +86,7 @@
   ]);
 
   <!-- bread_model_dialog_show_js_function -->
+
 
 
 </script>

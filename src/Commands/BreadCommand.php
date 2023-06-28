@@ -132,6 +132,11 @@ class BreadCommand extends Command
                 $replace['/* bread_datagrid_column */'][] = $this->replaceAttribute("views/components/fields/{$options['datagrid_column']}.blade.php", $name, $options);
             }
 
+            // set field for the datagrid
+            if (isset($options['dialog_control'])) {
+                $replace['<!-- bread_dialog_controlls --!>'][] = $this->replaceAttribute("views/components/controlls/{$options['dialog_control']}.blade.php", $name, $options);
+            }
+
         }
 
 		// set buttons and dialogs for the dialog of the model
