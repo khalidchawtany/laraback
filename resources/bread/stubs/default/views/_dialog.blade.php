@@ -1,40 +1,29 @@
 @php
 
-  $url = isset($bread_model_variable) ? 'bread_model_variables/update' : 'bread_model_variables/create';
+    $url = isset($bread_model_variable) ? 'bread_model_variables/update' : 'bread_model_variables/create';
 
-  $model = 'bread_model_class';
-  $title = isset($bread_model_variable) ? 'Update bread_model_class' : 'New bread_model_class';
-  $dialogWidth = 1000;
-  $dialogHeight = 700;
+    $model = 'bread_model_class';
 
+    $title = isset($bread_model_variable) ? __('Update bread_model_class') : __('New bread_model_class');
 
-  if (!isset($bread_model_variable) || $bread_model_variable == null) {
-      $bread_model_variable = (object) [
-          'id' => null,
-	      /* bread_dialog_fields */
+    $dialogWidth = 1000;
 
-          'date' => now()->format('Y-m-d'),
-          'merchant_name' => null,
-          'product_name' => null,
-          'product_type' => null,
-          'manufacture_co' => null,
-          'brand' => null,
+    $dialogHeight = 700;
 
-          'office_name' => null,
-          'vehicle_number' => null,
-          'product_weight' => null,
-          'company_code' => null,
+    if (!isset($bread_model_variable) || $bread_model_variable == null) {
+        $bread_model_variable = (object) [
+            'id' => null,
+            /* bread_dialog_fields */
 
-          'product_color' => null,
-          'expiry_date' => null,
-          'production_date' => null,
-          'batch_id' => null,
+            'date' => now()->format('Y-m-d'),
+            'vehicle_number' => null,
+            'merchant_name' => null,
 
-          'issue' => null,
-          'verdict' => null,
-          'body' => '	من ……………………………………………وەك خاوەنبار  کە زانیارییەکانی بارەکەم لە خشتەی خوارەوەدا خراوەتە ڕوو (کە لە دەروازەی نێودەوڵەتی پەروێزخانەوە هاوردەم کردووە) بەڵێن دەدەم پەیوەندی بکەم بە کارگەی بەرهەمهێنەرەوە و چارەسەری کێشە و کەموکورتییەکەی بکەم بە زووترین کات,بە پێچەوانەوە پابەند دەبم بە بڕیارەکانی کۆمپانیەوە.',
-      ];
-  }
+            'office_name' => null,
+
+            'verdict' => null,
+        ];
+    }
 
 @endphp
 
@@ -42,42 +31,55 @@
 
 <div class="easyui-layout" fit="true">
 
-  <div data-options="region:'center', border:false">
+    <div data-options="region:'center', border:false">
 
-    <form id="{{ $model }}Form" method="post" novalidate>
+        <form id="{{ $model }}Form" method="post" novalidate>
 
-      <input type="hidden" name="id" value="<?= $bread_model_variable->id ?>">
+            <input type="hidden" name="id" value="<?= $bread_model_variable->id ?>">
 
-      <table class="w-full left medium">
+            <div
+                style="padding: 20px; display:grid; grid-template-columns: 100px 700px; grid-template-rows: 30px; column-gap: 10px; row-gap: 10px;">
+
+                <label for="product_category_name">{{ __('Name') }}</label>
+                <input id="product_category_name" name="name" value="<?= $bread_model_variable->name ?>"
+                    class="easyui-textbox w-500" data-options="required: true,">
+
+                <label for="product_category_note">{{ __('Note') }}</label>
+                <input name="note" value="<?= $bread_model_variable->note ?>" class="easyui-textbox" multiline="true"
+                    style="width:500px; height:81px; ">
+
+            </div>
 
 
-        <tr>
-          <td colspan="4">
-            <div class=" ftitle">Info:</div>
-          </td>
+            <table class="w-full left medium">
 
-        </tr>
-        <tr>
-          <td>Date</td>
-          <td>
-            <input name="date" value="<?= $bread_model_variable->date ?>"
-              class="easyui-datebox  w-300"
-              data-options="formatter:dateFormatterServer,parser:dateParserServer">
-          </td>
-          <td class="pt-1 pl-2">Vehicle Number</td>
-          <td class="pt-1">
-            <input name="vehicle_number" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->vehicle_number ?>">
-          </td>
+                <tr>
+                    <td colspan="4">
+                        <div class=" ftitle">Info:</div>
+                    </td>
 
-        </tr>
+                </tr>
 
-        <tr>
-          <td class="pt-1">Office</td>
-          <td class="pt-1">
-            <input class="easyui-combobox w-300" name="office_name"
-              value="{{ $bread_model_variable->office_name }}"
-              data-options=" url: 'offices/json_list',
+                <tr>
+                    <td>Date</td>
+                    <td>
+                        <input name="date" value="<?= $bread_model_variable->date ?>" class="easyui-datebox  w-300"
+                            data-options="formatter:dateFormatterServer,parser:dateParserServer">
+                    </td>
+
+                    <td class="pt-1 pl-2">Vehicle Number</td>
+                    <td class="pt-1">
+                        <input name="vehicle_number" class="easyui-textbox w-300"
+                            value="<?= $bread_model_variable->vehicle_number ?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="pt-1">Office</td>
+                    <td class="pt-1">
+                        <input class="easyui-combobox w-300" name="office_name"
+                            value="{{ $bread_model_variable->office_name }}"
+                            data-options=" url: 'offices/json_list',
                                     mode: 'remote',
                                     method: 'get',
                                     valueField: 'name',
@@ -88,199 +90,94 @@
                                     prompt: 'Select a office',
                                     required:true
                       ">
+                    </td>
 
-          </td>
-          <td class="pl-2 pt-1">Merchant</td>
-          <td class="pt-1">
-            <input class="easyui-combobox w-300" name="merchant_name"
-              value="{{ $bread_model_variable->merchant_name }}"
-              data-options=" url: 'merchants/json_list',
-                                    mode: 'remote',
-                                    method: 'get',
-                                    valueField: 'name',
-                                    textField: 'name',
-                                    limitToList: true,
-                                    hasDownArrow: true,
-                                    panelHeight: 'auto',
-                                    prompt: 'Select a merchant',
-                                    required:true
-                      ">
+                    <td class="pl-2 pt-1"></td>
+                    <td class="pt-1"></td>
 
-          </td>
+                </tr>
 
-        </tr>
+                <tr>
+                    <td>Note</td>
+                    <td colspan="3">
+                        <div class="mt-1">
+                            <input name="note" value="<?= $bread_model_variable->note ?>"
+                                class="easyui-textbox" multiline="true" style="width:96%; height:81px; ">
+                        </div>
+                    </td>
+                </tr>
 
-        <tr>
-          <td class="pt-1">Manufacture Co</td>
-          <td class="pt-1">
-            <input name="manufacture_co" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->manufacture_co ?>">
-          </td>
-          <td class="pl-2 pt-1">Brand</td>
-          <td class="pt-1">
-            <input name="brand" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->brand ?>" />
-          </td>
-        </tr>
+            </table>
+        </form>
+    </div>
 
-        <tr>
-          <td class="pt-1">Company Code</td>
-          <td class="pt-1">
-            <input name="company_code" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->company_code ?>" />
-          </td>
-          <td class="pl-2 pt-1">Batch #</td>
-          <td class="pt-1">
-            <input name="batch_id" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->batch_id ?>" />
-          </td>
-        </tr>
+    <div class="panel-buttons" data-options="region:'south', height:'auto'">
 
-        <tr>
-          <td class="pt-1">Product</td>
-          <td class="pt-1">
-            <input name="product_name" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->product_name ?>" />
-          </td>
-          <td class="pl-2 pt-1">Product Type</td>
-          <td class="pt-1">
-            <input name="product_type" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->product_type ?>" />
-          </td>
-        </tr>
+        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
+            onclick="savebread_model_class()">{{ __('Save') }}</a>
 
-        <tr>
-          <td class="pt-1">Product Color</td>
-          <td class="pt-1">
-            <input name="product_color" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->product_color ?>">
-          </td>
-          <td class="pl-2 pt-1">Product Weight</td>
-          <td class="pt-1">
-            <input name="product_weight" class="easyui-textbox w-300"
-              value="<?= $bread_model_variable->product_weight ?>">
-          </td>
-        </tr>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+            onclick="$('#bread_model_classDialog').dialog('close');$('#bread_model_classDatagrid').edatagrid('reload');"
+            style="width:90px">{{ __('Cancel') }}</a>
 
-
-        <tr>
-          <td class="pt-1">Production Date</td>
-          <td class="pt-1">
-            <input name="production_date" class="easyui-datebox w-300"
-              value="<?= $bread_model_variable->production_date ?>"
-              data-options="formatter:dateFormatterServer,parser:dateParserServer">
-          </td>
-          <td class="pl-2 pt-1">Expiry Date</td>
-          <td class="pt-1">
-            <input name="expiry_date" class="easyui-datebox w-300"
-              value="<?= $bread_model_variable->expiry_date ?>"
-              data-options="formatter:dateFormatterServer,parser:dateParserServer">
-          </td>
-        </tr>
-
-
-        <tr>
-          <td>Issue</td>
-          <td colspan="3">
-            <div class="mt-1">
-              <input name="issue" value="<?= $bread_model_variable->issue ?>" class="easyui-textbox"
-                multiline="true" style="width:96%; height:81px; ">
-            </div>
-          </td>
-        </tr>
-
-
-        <tr>
-          <td>Body</td>
-          <td colspan="3">
-            <div class="mt-1">
-              <input name="body" value="<?= $bread_model_variable->body ?>" class="easyui-textbox"
-                multiline="true" style="width:96%; height:81px; ">
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Verdict</td>
-          <td colspan="3">
-            <div class="mt-1">
-              <input name="verdict" value="<?= $bread_model_variable->verdict ?>" class="easyui-textbox"
-                multiline="true" style="width:96%; height:81px; ">
-            </div>
-          </td>
-        </tr>
-
-      </table>
-    </form>
-  </div>
-
-  <div class="panel-buttons" data-options="region:'south', height:'auto'">
-
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
-      onclick="savebread_model_class()">Save</a>
-
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-      onclick="$('#bread_model_classDialog').dialog('close');$('#bread_model_classDatagrid').edatagrid('reload');"
-      style="width:90px">Cancel</a>
-
-  </div>
+    </div>
 
 </div>
 
 <script type="text/javascript">
-  $(function() {
-    $('#bread_model_classDialog')
-      .dialog({
-        width: <?= $dialogWidth ?>,
-        height: <?= $dialogHeight ?>
-      })
-      .dialog('center')
-      .dialog('setTitle', '{{ $title }}')
-      .dialog('open');
+    $(function() {
+        $('#bread_model_classDialog')
+            .dialog({
+                width: <?= $dialogWidth ?>,
+                height: <?= $dialogHeight ?>
+            })
+            .dialog('center')
+            .dialog('setTitle', '{{ $title }}')
+            .dialog('open');
 
-    // For some reason this form gets posted without my code!
-    $('#{{ $model }}Form').form({
-      onSubmit: function() {
-        return false;
-      }
-    });
-  });
-
-  function savebread_model_class() {
-
-    $('#{{ $model }}Form').form('submit', {
-
-      url: '<?= $url ?>',
-
-      onSubmit: function(param) {
-        param._token = window.CSRF_TOKEN;
-
-        if ($(this).form('validate')) {
-          return true;
-        }
-
-        return false;
-      },
-
-      success: function(result) {
-
-        var result = eval('(' + result + ')');
-
-        if (result.isError) {
-          $.messager.show({
-            title: 'Error',
-            msg: result.msg
-          });
-        } else {
-          $('#bread_model_classDialog').dialog('close');
-          $('#bread_model_classDatagrid').edatagrid('reload');
-          $.messager.show({
-            title: 'Success',
-            msg: 'Operation performed successfully!'
-          });
-        }
-      }
+        // For some reason this form gets posted without my code!
+        $('#{{ $model }}Form').form({
+            onSubmit: function() {
+                return false;
+            }
+        });
     });
 
-  }
+    function savebread_model_class() {
+
+        $('#{{ $model }}Form').form('submit', {
+
+            url: '<?= $url ?>',
+
+            onSubmit: function(param) {
+                param._token = window.CSRF_TOKEN;
+
+                if ($(this).form('validate')) {
+                    return true;
+                }
+
+                return false;
+            },
+
+            success: function(result) {
+
+                var result = eval('(' + result + ')');
+
+                if (result.isError) {
+                    $.messager.show({
+                        title: '{{ __('Error') }}',
+                        msg: result.msg
+                    });
+                } else {
+                    $('#bread_model_classDialog').dialog('close');
+                    $('#bread_model_classDatagrid').edatagrid('reload');
+                    $.messager.show({
+                        title: '{{ __('Success') }}',
+                        msg: '{{ __('Operation performed successfully!') }}'
+                    });
+                }
+            }
+        });
+
+    }
 </script>

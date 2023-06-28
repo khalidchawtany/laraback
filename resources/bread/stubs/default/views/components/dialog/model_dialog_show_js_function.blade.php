@@ -3,8 +3,8 @@
 
             if (!row) {
                 $.messager.show({
-                    title: 'Error',
-                    msg: 'Please select a bread_model_variable'
+                    title: '{{ __('Error') }}',
+                    msg: '{{ __('Please select a bread_model_variable') }}'
                 });
                 return;
             }
@@ -19,6 +19,6 @@
             if (id) {
                 params = '?id=' + id;
             }
-            $('#bread_model_classDialog').dialog('setTitle', 'New bread_model_class')
+            $('#bread_model_classDialog').dialog('setTitle', '{{ __('New bread_model_class')}}')
                 .dialog('refresh', 'bread_model_variables/dialog' + params);
         }
