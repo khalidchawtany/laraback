@@ -1,5 +1,5 @@
 
                 <label for="bread_model_variable_bread_attribute_name">{{ __('bread_attribute_label') }}</label>
-                <input id="bread_model_variable_bread_attribute_name" name="bread_attribute_name" value="<?= $bread_model_variable->bread_attribute_name ?>"
-                    class="easyui-switchbutton" data-options="required: true," checked label="" labelWidth="0" onText="On" offText="Off" >
+                <input id="safe_is_default" name="is_default" <?= $bread_model_variable->bread_attribute_name ? 'checked' : '' ?>
+                    class="easyui-switchbutton" label="" labelWidth="0" onText="<?= __('Yes') ?>" offText="<?= __('No') ?>" >
 

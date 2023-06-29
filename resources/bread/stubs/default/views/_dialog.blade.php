@@ -2,6 +2,8 @@
 
     $url = isset($bread_model_variable) ? 'bread_model_variables/update' : 'bread_model_variables/create';
 
+    $dialogId = request()->get('dialogId', 'bread_model_classDialog');
+
     $model = 'bread_model_class';
 
     $title = isset($bread_model_variable) ? __('Update bread_model_class') : __('New bread_model_class');
@@ -45,7 +47,7 @@
             onclick="savebread_model_class()">{{ __('Save') }}</a>
 
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-            onclick="$('#bread_model_classDialog').dialog('close');$('#bread_model_classDatagrid').edatagrid('reload');"
+            onclick="$('#<?= $dialogId ?>').dialog('close');$('#bread_model_classDatagrid').edatagrid('reload');"
             style="width:90px">{{ __('Cancel') }}</a>
 
     </div>
@@ -54,7 +56,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $('#bread_model_classDialog')
+        $('#<?= $dialogId ?>')
             .dialog({
                 width: <?= $dialogWidth ?>,
                 height: <?= $dialogHeight ?>
@@ -97,7 +99,7 @@
                         msg: result.msg
                     });
                 } else {
-                    $('#bread_model_classDialog').dialog('close');
+                    $('#<?= $dialogId ?>').dialog('close');
                     $('#bread_model_classDatagrid').edatagrid('reload');
                     $.messager.show({
                         title: '{{ __('Success') }}',
