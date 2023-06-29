@@ -1,6 +1,6 @@
 
             {field:'bread_attribute_name',
-				title:'bread_attribute_label',
+                title: '{{ __('bread_attribute_label') }}',
 				as: 'bread_attribute_as',
 				width:35,
 				align:'center',
