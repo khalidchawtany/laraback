@@ -42,7 +42,9 @@ class bread_controller_class extends Controller
     public function list(Request $request)
     {
         return JQueryBuilder::for(bread_model_class::class)
-        ->allowedFilters(["/* bread_fillable */"])
+        ->leftJoin('users', 'users.id', 'bread_model_variables.user_id')
+        ->selectRaw('bread_model_variables.*, users.name as user_name')
+        ->allowedFilters(["/* bread_fillable */, users.name"])
         ->jsonJPaginate();
     }
 
