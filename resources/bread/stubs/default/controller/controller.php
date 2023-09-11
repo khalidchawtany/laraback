@@ -43,9 +43,41 @@ class bread_controller_class extends Controller
     {
         return JQueryBuilder::for(bread_model_class::class)
         ->leftJoin('users', 'users.id', 'bread_model_variables.user_id')
-        ->selectRaw('bread_model_variables.*, users.name as user_name')
-        ->allowedFilters(["/* bread_fillable */, users.name"])
+        ->select([
+            'bread_model_variables.*',
+            'users.name as user_name',
+        ])
+
+        ->allowedFilters([
+            "/* bread_fillable */,
+            'users.name"
+        ])
         ->jsonJPaginate();
+    }
+
+    public function jsonList(Request $request)
+    {
+        $col = bread_model_class::query()
+            ->select([
+                'id',
+                'name',
+            ])
+            ->when(
+                $request->has('q'),
+                fn ($q) => $q->where('name', 'like', "%{$request->q}%")
+                    // ->orWhere('address', 'like', "%{$request->q}%")
+            )
+            ->limit(10)
+            ->get();
+
+        if ($request->has('prependNone')) {
+            return prependNone(
+                $col,
+                ['id' => 0, 'display_text' => __('All')]
+            );
+        }
+
+        return $col;
     }
 
     protected function create(Storebread_model_class $request)
