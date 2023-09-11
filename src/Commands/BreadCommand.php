@@ -152,7 +152,7 @@ class BreadCommand extends Command
 			$replace['/* bread_dialog_fields */'] = "\t\t'" . implode("' => null,\n\t\t  '", array_keys($this->options['attributes'])) . "'=> null,";
 		}
 
-        $replace['/* bread_fillable */'] = implode('", "', array_keys($this->options['attributes']));
+        $replace['/* bread_fillable */'] = implode("',\n\t\t '", array_keys($this->options['attributes']));
 
         foreach ($replace as $key => $values) {
             $this->replace['attributes'][$key] = trim(is_array($values) ? implode(PHP_EOL, $values) : $values);

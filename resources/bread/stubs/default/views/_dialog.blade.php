@@ -12,7 +12,9 @@
 
     $dialogHeight = 700;
 
-    if (!isset($bread_model_variable) || $bread_model_variable == null) {
+    $isNew = !isset($bread_model_variable) || $bread_model_variable == null;
+
+    if ($isNew) {
         $bread_model_variable = (object) [
             'id' => null,
             /* bread_dialog_fields */
@@ -32,7 +34,7 @@
             <input type="hidden" name="id" value="<?= $bread_model_variable->id ?>">
 
             <div
-                style="padding: 20px; display:grid; grid-template-columns: 100px 700px; grid-template-rows: 30px; column-gap: 10px; row-gap: 10px;">
+                style="padding: 20px; display:grid; grid-template-columns: 100px 700px; grid-template-rows: 22px; column-gap: 10px; row-gap: 10px;">
 
                 <!-- bread_dialog_controlls --!>
 
@@ -71,6 +73,21 @@
                 return false;
             }
         });
+
+
+        @if (!$isNew)
+
+            setTimeout(function() {
+                @if (!empty($bread_model_variable->project))
+                    $('#{{ $model }}Form #bread_model_variable_project_id').combogrid('setValue', {
+                        'id': '<?= $bread_model_variable->project_id ?>',
+                        'display_text': '<?= str_replace(PHP_EOL, ', ', $building->project->display_text) ?>'
+                    });
+                @endif
+            });
+
+        @endif
+
     });
 
     function savebread_model_class() {

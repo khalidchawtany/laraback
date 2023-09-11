@@ -49,8 +49,8 @@ class bread_controller_class extends Controller
         ])
 
         ->allowedFilters([
-            "/* bread_fillable */,
-            'users.name"
+            '/* bread_fillable */',
+            'users.name'
         ])
         ->jsonJPaginate();
     }

@@ -10,7 +10,7 @@
                             limitToList: true,
                             hasDownArrow: true,
                             panelHeight: 'auto',
-                            prompt: 'Select a bread_model_string',
+                            prompt: '{{ __('Select a bread_model_string') }}',
                             required:true
                 ">
 
