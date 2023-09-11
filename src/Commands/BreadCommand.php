@@ -182,7 +182,9 @@ class BreadCommand extends Command
                 $content = str_replace('bread_attribute_' . $key, $value, $content);
             }
 
+
             $content = str_replace('bread_attribute_class_from_foreign_key', str_replace(' ', '', ucwords(str_replace('_', ' ', substr($name, 0,-3)))), $content);
+            $content = str_replace('bread_attribute_table_name_from_foreign_key', str_plural(substr($name, 0,-3)), $content);
             $content = str_replace('bread_attribute_label', ucwords(str_replace('_', ' ', $name)), $content);
             $content = str_replace('bread_attribute_name', $name, $content);
         }
