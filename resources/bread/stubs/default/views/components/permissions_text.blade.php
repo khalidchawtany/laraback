@@ -1,0 +1,4 @@
+view_bread_model_variable
+create_bread_model_variable
+update_bread_model_variable
+destroy_bread_model_variable

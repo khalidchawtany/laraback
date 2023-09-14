@@ -284,6 +284,7 @@ class BreadCommand extends Command
         if ($this->option('permissions') || !$queryCommand && $this->confirm('add permissions ?')) {
             // append permissions to the permissions file
             $this->updatePermissions();
+            $this->updatePermissionsTextFile();
         }
 
         if ($this->option('routes') || !$queryCommand && $this->confirm('add routes ?')) {
@@ -449,6 +450,30 @@ $hook = '    }
             }
 		} else {
 			$this->error('Error: permission files does not exist.');
+		}
+    }
+
+    public function updatePermissionsTextFile()
+    {
+        $file = base_path($this->options['paths']['stubs']) . '/views/components/permissions_text.blade.php';
+        //If no permissions defined return
+        if(! array_key_exists( 'permissions', $this->options['paths'] )) {
+            return;
+        }
+        $target = base_path('permissions.txt');
+
+        if (file_exists($file) && file_exists($target)) {
+            $file_content = $this->replaceContent($file);
+            $target_content = file_get_contents($target);
+
+
+            if (strpos($target_content, $file_content) === false) {
+                file_put_contents($target, PHP_EOL . $file_content, FILE_APPEND);
+                $this->line('Updated file: ' . $target);
+            }
+
+        } else {
+            $this->error('Error: permission files does not exist.');
 		}
     }
 
