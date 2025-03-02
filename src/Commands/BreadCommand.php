@@ -2,16 +2,31 @@
 
 namespace Kjdion84\Laraback\Commands;
 
-use DirectoryIterator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Kjdion84\Laraback\Traits\FSUtils;
+use Kjdion84\Laraback\Traits\OtherUtils;
+use Kjdion84\Laraback\Traits\PathUtils;
+use Kjdion84\Laraback\Traits\ContentUtils;
+use Kjdion84\Laraback\Traits\Generators\ModelGenerator;
+use Kjdion84\Laraback\Traits\Generators\ControllerGenerator;
 
 class BreadCommand extends Command
 {
-    protected $signature = 'make:bread {file} {--m|migration} {--f|factory} {--s|seeder} {--a|model} {--w|routes} {--r|request} {--c|controller} {--g|permissions} {--p|view} {--i|home_icon} {--d|dashboard} {--l|navbar}';
+    use FSUtils;
+    use OtherUtils;
+    use PathUtils;
+    use ContentUtils;
+    use ModelGenerator;
+    use ControllerGenerator;
+
+    protected $signature = 'make:bread {file} {--m|migration} {--f|factory} {--s|seeder} {--a|model} {--c|controller} {--g|permissions} {--l|navigation}';
+
     // php artisan make:bread resources/bread/UsedCar.php
     protected $description = 'Generate BREAD files.';
+
     public $options = [];
+
     public $replace = [];
 
     public function __construct()
@@ -33,275 +48,64 @@ class BreadCommand extends Command
             }
 
             // output success message
-            $this->info($this->replace['model']['bread_model_class'] . ' BREAD generated!');
-        }
-        else {
+            $this->info($this->replace['model']['bread_model_class'].' BREAD generated!');
+        } else {
             // file does not exist, show error
-            $this->error('Error: ' . $this->argument('file') . ' does not exist.');
+            $this->error('Error: '.$this->argument('file').' does not exist.');
         }
-    }
-
-    public function setReplaceModel()
-    {
-        $model = basename($this->argument('file'), '.php');
-        $controller = $model.'Controller';
-        $string = trim(preg_replace('/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]/', ' $0', $model));
-
-        $this->replace['model'] = [
-            'bread_model_class' => $model,
-            'bread_model_variables' => str_replace(' ', '_', strtolower(str_plural($string))),
-            'bread_model_variable' => str_replace(' ', '_', strtolower($string)),
-            'bread_model_strings' => str_plural($string),
-            'bread_model_classes' => str_plural($model),
-            'bread_model_string' => $string,
-            '/* bread_model_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['model']) . ';',
-            '/* bread_model_use */' => 'use '. $this->replaceNamespace($this->options['paths']['model']) . '\\' . $model . ';',
-            'bread_controller_class' => $controller,
-            'bread_controller_view' => $this->replaceView($this->options['paths']['views']),
-            'bread_controller_routes' => ltrim(str_replace('App\\Http\\Controllers', '', $this->replaceNamespace($this->options['paths']['controller'])) . '\\' . $controller, '\\'),
-            '/* bread_controller_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['controller']) . ';',
-            '/* bread_request_namespace */' => 'namespace ' . $this->replaceNamespace($this->options['paths']['request']) . '\\' . str_replace(' ', '',str_plural($string)) . ';',
-        ];
-
-        return $this;
-    }
-
-    public function replaceNamespace($path)
-    {
-        $namespace = str_replace('app', 'App', $path);
-        $namespace = str_replace('/', '\\', $namespace);
-
-        return $namespace;
-    }
-
-    public function replaceView($path)
-    {
-        $view = str_replace('resources/views', '', $path);
-        $view = str_replace('/', '.', $view) . '.';
-
-        return ltrim($view, '.');
-    }
-
-    public function setReplaceAttributes()
-    {
-        $replace = [];
-
-        foreach ($this->options['attributes'] as $name => $options) {
-            // schema
-            if (isset($options['schema'])) {
-                $replace['/* bread_schema */'][] = $this->replaceAttribute('database/schema.php', $name, $options);
-            }
-
-            // replace factory template with the factory/faker.php for each attribute
-            if (isset($options['factory'])) {
-                $replace['/* bread_factory */'][] = $this->replaceAttribute('factory/faker.php', $name, $options);
-            } else if (isset($options['foreign'])) {
-                $replace['/* bread_factory */'][] = $this->replaceAttribute('factory/faker_foreign.php', $name, $options);
-            }
-
-            // set foreing key
-            if (!isset($options['foreign'])) {
-                $options['foreign'] = '';
-            } else {
-                $options['foreign'] =  '$table->'.$options['foreign'] . ';';
-            }
-            $replace['/* bread_foreign */'][] = $this->replaceAttribute('database/foreign.php', $name, $options);
-
-            // input
-            if (isset($options['input'])) {
-                foreach (['add', 'edit'] as $action) {
-                    $replace['<!-- bread_input_' . $action . ' -->'][] = $this->replaceAttribute('views/input/' . $action . '/' . $this->replaceInput($options) . '.blade.php', $name, $options);
-                }
-            }
-
-            // rule
-            foreach (['store', 'update'] as $action) {
-                if (isset($options['rule_' . $action])) {
-                    $replace['/* bread_rule_' . $action . ' */'][] = $this->replaceAttribute('requests/rule/' . $action . '.php', $name, $options);
-                }
-            }
-
-            // datatable
-            if (isset($options['datatable']) && $options['datatable']) {
-                $replace['<!-- bread_datatable_heading -->'][] = $this->replaceAttribute('views/datatable/heading.blade.php', $name, $options);
-                $replace['/* bread_datatable_column */'][] = $this->replaceAttribute('views/datatable/column.blade.php', $name, $options);
-            }
-
-            // set field for the datagrid
-            if (isset($options['datagrid_column'])) {
-                $replace['/* bread_datagrid_column */'][] = $this->replaceAttribute("views/components/fields/{$options['datagrid_column']}.blade.php", $name, $options);
-            }
-
-        }
-
-		// set buttons and dialogs for the dialog of the model
-		if (isset($this->options['options']['model_dialog'])) {
-			$replace['<!-- bread_model_dialog_show_button -->'][]      = $this->replaceAttribute("views/components/dialog/model_dialog_show_button.blade.php", $name, $options);
-			$replace['<!-- model_dialog_placeholder -->'][]            = $this->replaceAttribute("views/components/dialog/model_dialog_placeholder.blade.php", $name, $options);
-			$replace['<!-- bread_model_dialog_show_js_function -->'][] = $this->replaceAttribute("views/components/dialog/model_dialog_show_js_function.blade.php", $name, $options);
-			$replace['/* bread_model_dialog_on_dblclick_datagrid*/'][] = $this->replaceAttribute("views/components/dialog/model_dialog_on_dblclick_datagrid.blade.php", $name, $options);
-			$replace['/* bread_dialog_fields */']                      = "\t\t'" . implode("' => null,\n\t\t  '", array_keys($this->options['attributes'])) . "'=> null,";
-		}
-
-        $replace['/* bread_fillable */'] = implode('", "', array_keys($this->options['attributes']));
-
-        foreach ($replace as $key => $values) {
-            $this->replace['attributes'][$key] = trim(is_array($values) ? implode(PHP_EOL, $values) : $values);
-        }
-
-        return $this;
-    }
-
-    public function replaceAttribute($file, $name, $options)
-    {
-        $file = base_path($this->options['paths']['stubs']) . '/' . $file;
-
-        if (file_exists($file)) {
-            $content = file_get_contents($file);
-
-            // if the last char is a newline remove it
-            if (substr($content, -1) == "\n"){
-                $content = substr($content, 0, -1);
-            }
-
-            foreach ($options as $key => $value) {
-				if (is_array($value)) {
-					foreach ($value as $vKey => $vValue) {
-						$content = str_replace('bread_attribute_' . $vKey, $vValue, $content);
-					}
-				}
-                $content = str_replace('bread_attribute_' . $key, $value, $content);
-            }
-
-            $content = str_replace('bread_attribute_class_from_foreign_key', str_replace(' ', '', ucwords(str_replace('_', ' ', substr($name, 0,-3)))), $content);
-            $content = str_replace('bread_attribute_label', ucwords(str_replace('_', ' ', $name)), $content);
-            $content = str_replace('bread_attribute_name', $name, $content);
-        }
-
-        return isset($content) ? $content : null;
-    }
-
-    public function replaceInput($options)
-    {
-        $input = isset($options['input']) ? $options['input'] : null;
-
-        if (in_array($input, ['text', 'password', 'email', 'number', 'tel', 'url'])) {
-            $input = 'input';
-        }
-        else if (in_array($input, ['radio', 'checkbox'])) {
-            $input = 'check';
-        }
-
-        return $input;
-    }
-
-    public function hasAnyFlagSet()
-    {
-        foreach ($this->options() as $option) {
-          if($option == true) {
-              return true;
-          }
-        }
-        return false;
     }
 
     public function generate()
     {
-        $queryCommand = $this->hasAnyFlagSet();
+        $this->generateController();
 
-        if ($this->option('controller') || !$queryCommand && $this->confirm('controller ?')) {
-            // create controller file
-            if (!file_exists(base_path($this->options['paths']['controller']))) mkdir(base_path($this->options['paths']['controller']), 0777, true);
-            $this->createFile('controller/controller.php', base_path($this->options['paths']['controller']) . '/' . $this->replace['model']['bread_controller_class'] . '.php');
-        }
-
-        if ($this->option('model') || !$queryCommand && $this->confirm('model ?')) {
-            // create model file
-            if (!file_exists(base_path($this->options['paths']['model']))) mkdir(base_path($this->options['paths']['model']), 0777, true);
-            $this->createFile('model.php', base_path($this->options['paths']['model']) . '/' . $this->replace['model']['bread_model_class'] . '.php');
-        }
+        $this->generateModel();
 
 
-        if ($this->option('factory') || !$queryCommand && $this->confirm('factory ?')) {
+        if ($this->userWants('factory')) {
             // create factory file
-            if (!file_exists(base_path($this->options['paths']['factory']))) mkdir(base_path($this->options['paths']['factory']), 0777, true);
-            $this->createFile('factory/factory.php', base_path($this->options['paths']['factory']) . '/' . $this->replace['model']['bread_model_class'] . 'Factory.php');
+            $this->mkDirFor('factory');
+            $this->createFile(
+                'factory/factory.php',
+                base_path($this->options['paths']['factory']).'/'.$this->replace['model']['bread_model_class'].'Factory.php'
+            );
         }
 
-        if ($this->option('seeder') || !$queryCommand && $this->confirm('seeder ?')) {
-            // create database seeder file
-            if (!file_exists(base_path($this->options['paths']['seed']))) mkdir(base_path($this->options['paths']['seed']), 0777, true);
-            $this->createFile('database/table_seeder.php', base_path($this->options['paths']['seed']) . '/' . $this->replace['model']['bread_model_classes'] . 'TableSeeder.php');
+        if ($this->userWants('seeder')) {
+            $this->mkDirFor('seed');
+            $this->createFile(
+                'database/table_seeder.php',
+                base_path($this->options['paths']['seed']).'/'.$this->replace['model']['bread_model_classes'].'TableSeeder.php'
+            );
 
             // update database seeder
             $this->updateDatabaseSeeder();
         }
 
-
-        if ($this->option('migration') || !$queryCommand && $this->confirm('migration ?')) {
+        if ($this->userWants('migration')) {
             // create migration file
-            $this->createFile('database/migration.php', database_path('migrations/' . date('Y_m_d_000000', time()) . '_create_' . $this->replace['model']['bread_model_variables'] . '_table.php'));
+            $this->createFile(
+                'database/migration.php',
+                database_path('migrations/'.date('Y_m_d_000000', time()).'_create_'.$this->replace['model']['bread_model_variables'].'_table.php')
+            );
         }
 
-        if ($this->option('request') || !$queryCommand && $this->confirm('request ?')) {
-            // create requests files
-            $this->createRequests();
-        }
-
-        if ($this->option('view') || !$queryCommand && $this->confirm('view ?')) {
-            // create view files
-            $this->createViews();
-        }
-
-        if ($this->option('navbar') || !$queryCommand && $this->confirm('add to navbar ?')) {
-            // add menu item to layout navbar
-            $this->updateNavbar();
-        }
-
-        if ($this->option('dashboard') || !$queryCommand && $this->confirm('add to dashboard ?')) {
-            // add dock item to layout dashboard
-            $this->updateDashboard();
-        }
-
-        if ($this->option('home_icon') || !$queryCommand && $this->confirm('add home icon ?')) {
-            // append home icon
-            $this->updateHomeIcon();
-            // add home icon css to styles
-            $this->updateHomeIconCss();
-        }
-
-        if ($this->option('permissions') || !$queryCommand && $this->confirm('add permissions ?')) {
+        if ($this->userWants('permissions')) {
             // append permissions to the permissions file
             $this->updatePermissions();
-        }
-
-        if ($this->option('routes') || !$queryCommand && $this->confirm('add routes ?')) {
-            // append routes to web
-            $this->updateRoutes();
-        }
-    }
-
-    public function createFile($file, $target)
-    {
-        $file = base_path($this->options['paths']['stubs']) . '/' . $file;
-
-        if (file_exists($file)) {
-            file_put_contents($target, $this->replaceContent($file));
-            $this->line('Created file: ' . $target);
         }
     }
 
     public function updateDatabaseSeeder()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/database/dbseeder.php';
+        $file = base_path($this->options['paths']['stubs']).'/database/dbseeder.php';
         //If no navbar defined return
-        if(! array_key_exists ( 'seed', $this->options['paths'] ) )
-        {
+        if (! array_key_exists('seed', $this->options['paths'])) {
             return;
         }
-        $target = base_path($this->options['paths']['seed']. '/DatabaseSeeder.php');
+        $target = base_path($this->options['paths']['seed'].'/DatabaseSeeder.php');
         //$hook = '/* bread_dbseeder */';
-$hook = '    }
+        $hook = '    }
 }';
 
         if (file_exists($file) && file_exists($target)) {
@@ -309,120 +113,17 @@ $hook = '    }
             $target_content = file_get_contents($target);
 
             if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . $hook  , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
-    }
-
-
-    public function createRequests()
-    {
-        $requests_folder = base_path($this->options['paths']['stubs']) . '/requests';
-
-        if (file_exists($requests_folder)) {
-            $requests = new DirectoryIterator($requests_folder);
-            $target_folder = base_path($this->options['paths']['request']) . '/' . $this->replace['model']['bread_model_classes'];
-
-            // create target folder if it doesn't exist
-            if (!file_exists($target_folder)) {
-                mkdir($target_folder, 0777, true);
-            }
-
-            // loop through all request stubs and create
-            foreach ($requests as $request) {
-                if (!$request->isDot() && !$request->isDir()) {
-                    $this->createFile('requests/' . $request->getFilename(),
-                        $target_folder . '/' .substr($request->getFilename(),0,-4) . $this->replace['model']['bread_model_class'] . '.php');
-                }
-            }
-        }
-    }
-
-    public function createViews()
-    {
-        $views_folder = base_path($this->options['paths']['stubs']) . '/views';
-
-        if (file_exists($views_folder)) {
-            $views = new DirectoryIterator($views_folder);
-            $target_folder = base_path($this->options['paths']['views']) . '/' . $this->replace['model']['bread_model_variables'];
-
-            // create target folder if it doesn't exist
-            if (!file_exists($target_folder)) {
-                mkdir($target_folder, 0777, true);
-            }
-
-			$dialogFileNamePrefix = "";
-            // loop through all view stubs and create
-            foreach ($views as $view) {
-                if (!$view->isDot() && !$view->isDir()) {
-					if ($view->getFilename() == '_dialog.blade.php') {
-						// for dialog view, check if dialog is enabled
-						if( !isset($this->options['options']['model_dialog'])) {
-							$this->line('Skipping dialog view');
-							continue;
-						}
-
-						// set dialog file name prefix
-						$dialogFileNamePrefix = $this->replace['model']['bread_model_variable'];
-					}
-
-                    $this->createFile('views/' . $view->getFilename(), $target_folder . '/'. $dialogFileNamePrefix . $view->getFilename());
-                }
-            }
-        }
-    }
-
-    public function updateDashboard()
-    {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/dashboard.blade.php';
-        //If no navbar defined return
-        if(! array_key_exists ( 'dashboard', $this->options['paths'] ) )
-        {
-            return;
-        }
-        $target = base_path($this->options['paths']['dashboard']);
-        $hook = '<!-- bread_dashboard -->';
-
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
-    }
-
-
-    public function updateNavbar()
-    {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/navbar.blade.php';
-        //If no navbar defined return
-        if(! array_key_exists ( 'navbar', $this->options['paths'] ) )
-        {
-            return;
-        }
-        $target = base_path($this->options['paths']['navbar']);
-        $hook = '<!-- bread_navbar -->';
-
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
+                file_put_contents($target, str_replace($hook, $file_content.$hook, $target_content));
+                $this->line('Updated file: '.$target);
             }
         }
     }
 
     public function updatePermissions()
     {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/permissions.blade.php';
+        $file = base_path($this->options['paths']['stubs']).'/views/components/permissions.blade.php';
         //If no permissions defined return
-        if(! array_key_exists( 'permissions', $this->options['paths'] )) {
+        if (! array_key_exists('permissions', $this->options['paths'])) {
             return;
         }
         $target = base_path($this->options['paths']['permissions']);
@@ -433,78 +134,11 @@ $hook = '    }
             $target_content = file_get_contents($target);
 
             if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
+                file_put_contents($target, str_replace($hook, $file_content.PHP_EOL.$hook, $target_content));
+                $this->line('Updated file: '.$target);
             }
-		} else {
-			$this->error('Error: permission files does not exist.');
-		}
-    }
-
-    public function updateHomeIcon()
-    {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon.blade.php';
-        //If no home path defined return
-        if(! array_key_exists( 'home_icon', $this->options['paths'] )) {
-            return;
+        } else {
+            $this->error('Error: permission files does not exist.');
         }
-        $target = base_path($this->options['paths']['home_icon']);
-        $hook = '<!-- bread_home_icon -->';
-
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
-    }
-
-    public function updateHomeIconCss()
-    {
-        $file = base_path($this->options['paths']['stubs']) . '/views/components/home_icon_css.blade.php';
-        //If no home path defined return
-        if(! array_key_exists( 'home_icon_css', $this->options['paths'] )) {
-            return;
-        }
-        $target = base_path($this->options['paths']['home_icon_css']);
-        $hook = '/* bread_home_icon_css */';
-
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, str_replace($hook, $file_content . PHP_EOL . $hook , $target_content));
-                $this->line('Updated file: ' . $target);
-            }
-        }
-    }
-
-    public function updateRoutes()
-    {
-        $file = base_path($this->options['paths']['stubs']) . '/routes.php';
-        $target = base_path($this->options['paths']['routes']);
-
-        if (file_exists($file) && file_exists($target)) {
-            $file_content = $this->replaceContent($file);
-            $target_content = file_get_contents($target);
-
-            if (strpos($target_content, $file_content) === false) {
-                file_put_contents($target, PHP_EOL . PHP_EOL . $file_content, FILE_APPEND);
-                $this->line('Updated file: ' . $target);
-            }
-        }
-    }
-
-    public function replaceContent($file)
-    {
-        $content = file_get_contents($file);
-        $content = strtr($content, $this->replace['attributes']);
-        $content = strtr($content, $this->replace['model']);
-
-        return $content;
     }
 }
